@@ -39,7 +39,7 @@ func TestPostfixL(t *testing.T) {
 			stream := antlr.NewCommonTokenStream(lexer, 0)
 			p := parser.NewCalcPlusParser(stream)
 
-			antlr.ParseTreeWalkerDefault.Walk(postfixPrinter, p.Prog())
+			antlr.ParseTreeWalkerDefault.Walk(postfixPrinter, p.Calc0())
 
 			assert.Equal(t, tc.want, postfixPrinter.PostfixExpr)
 		})

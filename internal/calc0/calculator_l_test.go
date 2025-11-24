@@ -39,7 +39,7 @@ func TestCalculatorL(t *testing.T) {
 			stream := antlr.NewCommonTokenStream(lexer, 0)
 			p := parser.NewCalcPlusParser(stream)
 
-			antlr.ParseTreeWalkerDefault.Walk(c, p.Prog())
+			antlr.ParseTreeWalkerDefault.Walk(c, p.Calc0())
 
 			assert.Equal(t, tc.want, c.Result())
 		})

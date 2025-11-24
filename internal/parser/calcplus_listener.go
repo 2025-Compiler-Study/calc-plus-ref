@@ -7,8 +7,8 @@ import "github.com/antlr4-go/antlr/v4"
 type CalcPlusListener interface {
 	antlr.ParseTreeListener
 
-	// EnterProg is called when entering the prog production.
-	EnterProg(c *ProgContext)
+	// EnterCalc0 is called when entering the calc0 production.
+	EnterCalc0(c *Calc0Context)
 
 	// EnterMulDiv is called when entering the MulDiv production.
 	EnterMulDiv(c *MulDivContext)
@@ -22,8 +22,8 @@ type CalcPlusListener interface {
 	// EnterInt is called when entering the Int production.
 	EnterInt(c *IntContext)
 
-	// ExitProg is called when exiting the prog production.
-	ExitProg(c *ProgContext)
+	// ExitCalc0 is called when exiting the calc0 production.
+	ExitCalc0(c *Calc0Context)
 
 	// ExitMulDiv is called when exiting the MulDiv production.
 	ExitMulDiv(c *MulDivContext)

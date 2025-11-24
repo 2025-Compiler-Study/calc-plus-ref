@@ -7,8 +7,8 @@ import "github.com/antlr4-go/antlr/v4"
 type CalcPlusVisitor interface {
 	antlr.ParseTreeVisitor
 
-	// Visit a parse tree produced by CalcPlusParser#prog.
-	VisitProg(ctx *ProgContext) interface{}
+	// Visit a parse tree produced by CalcPlusParser#calc0.
+	VisitCalc0(ctx *Calc0Context) interface{}
 
 	// Visit a parse tree produced by CalcPlusParser#MulDiv.
 	VisitMulDiv(ctx *MulDivContext) interface{}

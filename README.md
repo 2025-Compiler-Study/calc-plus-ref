@@ -8,29 +8,30 @@
 
 ## Calc-0
 
-언어 스펙은 예제의 Expr 문법에서 아주 조금 확장한다.
-
-* L1의 문법 제목을 `Expr` 대신 `CalcPlus`로 변경
-* L3~L6 마지막에 `#`으로 시작하는 부분의 Label이 추가
-* L8이 원래 `NEWLINE : [\r\n]+ -> skip;`이었음
-* L8을 `WS`로 변경하여, 스페이스와 탭도 무시할 수 있게 변경
-
-```antlrv4
-grammar CalcPlus;
-prog:	expr EOF ;
-expr:	expr ('*'|'/') expr # MulDiv
-    |	expr ('+'|'-') expr # AddSub
-    |	INT                 # Int
-    |	'(' expr ')'        # Parens
-    ;
-WS  : [ \t\r\n]+ -> skip;
-INT : [0-9]+ ;
-```
+언어 스펙은 예제의 Expr 문법에서 조금 확장한 아래 문법을 참고한다.
 
 1. 코드는 단일 수식으로 끝난다.
 2. 하지만 한 수식에는 여러 항의 연산이 가능하다.
 3. 사칙연산에 대한 우선순위는 적용된다.
 4. 괄호는 연산 우선순위를 강제하기 위해 사용된다.
+
+```antlrv4
+grammar CalcPlus;
+calc0   :   expr EOF ;
+expr    :   expr ('*'|'/') expr # MulDiv
+        |   expr ('+'|'-') expr # AddSub
+        |   INT                 # Int
+        |   '(' expr ')'        # Parens
+        ;
+WS  : [ \t\r\n]+ -> skip;
+INT : [0-9]+ ;
+```
+
+* L1의 문법 제목을 `Expr` 대신 `CalcPlus`로 변경
+* L2의 프로그램 전체 문법을 `prog` 대신 `calc0`로 변경
+* L3~L6 마지막에 `#`으로 시작하는 부분의 Label이 추가
+* L8이 원래 `NEWLINE : [\r\n]+ -> skip;`이었음
+* L8을 `WS`로 변경하여, 스페이스와 탭도 무시할 수 있게 변경
 
 ### 구현 과제 #1
 

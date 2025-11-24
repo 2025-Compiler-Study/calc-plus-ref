@@ -14,7 +14,7 @@ func (p *PostfixV) Visit(tree antlr.ParseTree) any {
 	return tree.Accept(p)
 }
 
-func (p *PostfixV) VisitProg(ctx *parser.ProgContext) any {
+func (p *PostfixV) VisitCalc0(ctx *parser.Calc0Context) any {
 	p.PostfixExpr = p.Visit(ctx.Expr()).(string)
 	return p.PostfixExpr
 }

@@ -38,7 +38,7 @@ func calcplusParserInit() {
 		"", "", "", "", "", "", "", "WS", "INT",
 	}
 	staticData.RuleNames = []string{
-		"prog", "expr",
+		"calc0", "expr",
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
@@ -103,12 +103,12 @@ const (
 
 // CalcPlusParser rules.
 const (
-	CalcPlusParserRULE_prog = 0
-	CalcPlusParserRULE_expr = 1
+	CalcPlusParserRULE_calc0 = 0
+	CalcPlusParserRULE_expr  = 1
 )
 
-// IProgContext is an interface to support dynamic dispatch.
-type IProgContext interface {
+// ICalc0Context is an interface to support dynamic dispatch.
+type ICalc0Context interface {
 	antlr.ParserRuleContext
 
 	// GetParser returns the parser.
@@ -118,43 +118,43 @@ type IProgContext interface {
 	Expr() IExprContext
 	EOF() antlr.TerminalNode
 
-	// IsProgContext differentiates from other interfaces.
-	IsProgContext()
+	// IsCalc0Context differentiates from other interfaces.
+	IsCalc0Context()
 }
 
-type ProgContext struct {
+type Calc0Context struct {
 	antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
-func NewEmptyProgContext() *ProgContext {
-	var p = new(ProgContext)
+func NewEmptyCalc0Context() *Calc0Context {
+	var p = new(Calc0Context)
 	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
-	p.RuleIndex = CalcPlusParserRULE_prog
+	p.RuleIndex = CalcPlusParserRULE_calc0
 	return p
 }
 
-func InitEmptyProgContext(p *ProgContext) {
+func InitEmptyCalc0Context(p *Calc0Context) {
 	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
-	p.RuleIndex = CalcPlusParserRULE_prog
+	p.RuleIndex = CalcPlusParserRULE_calc0
 }
 
-func (*ProgContext) IsProgContext() {}
+func (*Calc0Context) IsCalc0Context() {}
 
-func NewProgContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ProgContext {
-	var p = new(ProgContext)
+func NewCalc0Context(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *Calc0Context {
+	var p = new(Calc0Context)
 
 	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
 
 	p.parser = parser
-	p.RuleIndex = CalcPlusParserRULE_prog
+	p.RuleIndex = CalcPlusParserRULE_calc0
 
 	return p
 }
 
-func (s *ProgContext) GetParser() antlr.Parser { return s.parser }
+func (s *Calc0Context) GetParser() antlr.Parser { return s.parser }
 
-func (s *ProgContext) Expr() IExprContext {
+func (s *Calc0Context) Expr() IExprContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
 		if _, ok := ctx.(IExprContext); ok {
@@ -170,43 +170,43 @@ func (s *ProgContext) Expr() IExprContext {
 	return t.(IExprContext)
 }
 
-func (s *ProgContext) EOF() antlr.TerminalNode {
+func (s *Calc0Context) EOF() antlr.TerminalNode {
 	return s.GetToken(CalcPlusParserEOF, 0)
 }
 
-func (s *ProgContext) GetRuleContext() antlr.RuleContext {
+func (s *Calc0Context) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *ProgContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+func (s *Calc0Context) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-func (s *ProgContext) EnterRule(listener antlr.ParseTreeListener) {
+func (s *Calc0Context) EnterRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(CalcPlusListener); ok {
-		listenerT.EnterProg(s)
+		listenerT.EnterCalc0(s)
 	}
 }
 
-func (s *ProgContext) ExitRule(listener antlr.ParseTreeListener) {
+func (s *Calc0Context) ExitRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(CalcPlusListener); ok {
-		listenerT.ExitProg(s)
+		listenerT.ExitCalc0(s)
 	}
 }
 
-func (s *ProgContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+func (s *Calc0Context) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 	switch t := visitor.(type) {
 	case CalcPlusVisitor:
-		return t.VisitProg(s)
+		return t.VisitCalc0(s)
 
 	default:
 		return t.VisitChildren(s)
 	}
 }
 
-func (p *CalcPlusParser) Prog() (localctx IProgContext) {
-	localctx = NewProgContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 0, CalcPlusParserRULE_prog)
+func (p *CalcPlusParser) Calc0() (localctx ICalc0Context) {
+	localctx = NewCalc0Context(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 0, CalcPlusParserRULE_calc0)
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(4)

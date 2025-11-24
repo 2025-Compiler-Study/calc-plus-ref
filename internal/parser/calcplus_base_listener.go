@@ -20,11 +20,11 @@ func (s *BaseCalcPlusListener) EnterEveryRule(ctx antlr.ParserRuleContext) {}
 // ExitEveryRule is called when any rule is exited.
 func (s *BaseCalcPlusListener) ExitEveryRule(ctx antlr.ParserRuleContext) {}
 
-// EnterProg is called when production prog is entered.
-func (s *BaseCalcPlusListener) EnterProg(ctx *ProgContext) {}
+// EnterCalc0 is called when production calc0 is entered.
+func (s *BaseCalcPlusListener) EnterCalc0(ctx *Calc0Context) {}
 
-// ExitProg is called when production prog is exited.
-func (s *BaseCalcPlusListener) ExitProg(ctx *ProgContext) {}
+// ExitCalc0 is called when production calc0 is exited.
+func (s *BaseCalcPlusListener) ExitCalc0(ctx *Calc0Context) {}
 
 // EnterMulDiv is called when production MulDiv is entered.
 func (s *BaseCalcPlusListener) EnterMulDiv(ctx *MulDivContext) {}

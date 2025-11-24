@@ -15,7 +15,7 @@ func (c *CalculatorV) Visit(tree antlr.ParseTree) any {
 	return tree.Accept(c)
 }
 
-func (c *CalculatorV) VisitProg(ctx *parser.ProgContext) any {
+func (c *CalculatorV) VisitCalc0(ctx *parser.Calc0Context) any {
 	c.Result = c.Visit(ctx.Expr()).(int)
 	return c.Result
 }

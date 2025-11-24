@@ -7,7 +7,7 @@ type BaseCalcPlusVisitor struct {
 	*antlr.BaseParseTreeVisitor
 }
 
-func (v *BaseCalcPlusVisitor) VisitProg(ctx *ProgContext) interface{} {
+func (v *BaseCalcPlusVisitor) VisitCalc0(ctx *Calc0Context) interface{} {
 	return v.VisitChildren(ctx)
 }
 
