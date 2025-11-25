@@ -1,0 +1,5 @@
+.venv/**
+
+# antlr generated files
+*.interp
+*.tokens
