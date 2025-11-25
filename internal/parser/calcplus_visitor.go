@@ -16,9 +16,18 @@ type CalcPlusVisitor interface {
 	// Visit a parse tree produced by CalcPlusParser#AddSub.
 	VisitAddSub(ctx *AddSubContext) interface{}
 
+	// Visit a parse tree produced by CalcPlusParser#Var.
+	VisitVar(ctx *VarContext) interface{}
+
 	// Visit a parse tree produced by CalcPlusParser#Parens.
 	VisitParens(ctx *ParensContext) interface{}
 
 	// Visit a parse tree produced by CalcPlusParser#Int.
 	VisitInt(ctx *IntContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#calc1.
+	VisitCalc1(ctx *Calc1Context) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#ExprAssign.
+	VisitExprAssign(ctx *ExprAssignContext) interface{}
 }

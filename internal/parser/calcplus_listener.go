@@ -16,11 +16,20 @@ type CalcPlusListener interface {
 	// EnterAddSub is called when entering the AddSub production.
 	EnterAddSub(c *AddSubContext)
 
+	// EnterVar is called when entering the Var production.
+	EnterVar(c *VarContext)
+
 	// EnterParens is called when entering the Parens production.
 	EnterParens(c *ParensContext)
 
 	// EnterInt is called when entering the Int production.
 	EnterInt(c *IntContext)
+
+	// EnterCalc1 is called when entering the calc1 production.
+	EnterCalc1(c *Calc1Context)
+
+	// EnterExprAssign is called when entering the ExprAssign production.
+	EnterExprAssign(c *ExprAssignContext)
 
 	// ExitCalc0 is called when exiting the calc0 production.
 	ExitCalc0(c *Calc0Context)
@@ -31,9 +40,18 @@ type CalcPlusListener interface {
 	// ExitAddSub is called when exiting the AddSub production.
 	ExitAddSub(c *AddSubContext)
 
+	// ExitVar is called when exiting the Var production.
+	ExitVar(c *VarContext)
+
 	// ExitParens is called when exiting the Parens production.
 	ExitParens(c *ParensContext)
 
 	// ExitInt is called when exiting the Int production.
 	ExitInt(c *IntContext)
+
+	// ExitCalc1 is called when exiting the calc1 production.
+	ExitCalc1(c *Calc1Context)
+
+	// ExitExprAssign is called when exiting the ExprAssign production.
+	ExitExprAssign(c *ExprAssignContext)
 }

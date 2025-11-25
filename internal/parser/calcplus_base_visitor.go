@@ -19,10 +19,22 @@ func (v *BaseCalcPlusVisitor) VisitAddSub(ctx *AddSubContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseCalcPlusVisitor) VisitVar(ctx *VarContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseCalcPlusVisitor) VisitParens(ctx *ParensContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
 func (v *BaseCalcPlusVisitor) VisitInt(ctx *IntContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitCalc1(ctx *Calc1Context) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitExprAssign(ctx *ExprAssignContext) interface{} {
 	return v.VisitChildren(ctx)
 }
