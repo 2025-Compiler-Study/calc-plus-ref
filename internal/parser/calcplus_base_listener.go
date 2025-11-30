@@ -38,6 +38,12 @@ func (s *BaseCalcPlusListener) EnterAddSub(ctx *AddSubContext) {}
 // ExitAddSub is called when production AddSub is exited.
 func (s *BaseCalcPlusListener) ExitAddSub(ctx *AddSubContext) {}
 
+// EnterVar is called when production Var is entered.
+func (s *BaseCalcPlusListener) EnterVar(ctx *VarContext) {}
+
+// ExitVar is called when production Var is exited.
+func (s *BaseCalcPlusListener) ExitVar(ctx *VarContext) {}
+
 // EnterParens is called when production Parens is entered.
 func (s *BaseCalcPlusListener) EnterParens(ctx *ParensContext) {}
 
@@ -49,3 +55,15 @@ func (s *BaseCalcPlusListener) EnterInt(ctx *IntContext) {}
 
 // ExitInt is called when production Int is exited.
 func (s *BaseCalcPlusListener) ExitInt(ctx *IntContext) {}
+
+// EnterCalc1 is called when production calc1 is entered.
+func (s *BaseCalcPlusListener) EnterCalc1(ctx *Calc1Context) {}
+
+// ExitCalc1 is called when production calc1 is exited.
+func (s *BaseCalcPlusListener) ExitCalc1(ctx *Calc1Context) {}
+
+// EnterExprAssign is called when production ExprAssign is entered.
+func (s *BaseCalcPlusListener) EnterExprAssign(ctx *ExprAssignContext) {}
+
+// ExitExprAssign is called when production ExprAssign is exited.
+func (s *BaseCalcPlusListener) ExitExprAssign(ctx *ExprAssignContext) {}
