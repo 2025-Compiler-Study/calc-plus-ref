@@ -30,4 +30,16 @@ type CalcPlusVisitor interface {
 
 	// Visit a parse tree produced by CalcPlusParser#ExprAssign.
 	VisitExprAssign(ctx *ExprAssignContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#IfElse.
+	VisitIfElse(ctx *IfElseContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#calc2.
+	VisitCalc2(ctx *Calc2Context) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#cond.
+	VisitCond(ctx *CondContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#block.
+	VisitBlock(ctx *BlockContext) interface{}
 }
