@@ -222,3 +222,66 @@ d = (5 - e) * 2;// a == 2, b == 3, c == 9, d == 10, e == 0
 ```
 
 힌트: 알아서 결정해보자
+
+## Calc-3
+
+변수의 값 입력과 출력을 도입해보자.
+
+1. 내장 함수 개념을 도입한다. `read`, `write` 함수가 추가된다.
+2. 함수 호출은 C언어를 비롯한 대부분의 프로그래밍 언어 처럼 `read()`방식으로 처리된다.
+3. `a = read()` 방식으로 `read`는 인자가 없고, 입력받은 숫자를 반환한다.
+4. `read()`는 즉시 변수로 값을 저장해야 하며, 수식의 일부가 될 수 없다. (읽기 순서 모호성 방지)
+5. `write(b)`, `write(1+2)` 방식으로 `write`는 인자로 수식을 입력받고, 결과는 반환하지 않는다.
+
+```antlrv4
+grammar CalcPlus;
+calc0   :   expr EOF ;
+expr    :   expr ('*'|'/') expr # MulDiv
+        |   expr ('+'|'-') expr # AddSub
+        |   INT                 # Int
+        |   VAR                 # Var
+        |   '(' expr ')'        # Parens
+        ;
+
+calc1   :   (stmt)+ EOF;
+stmt    :   VAR '=' expr ';'                    # ExprAssign
+        |   VAR '=' 'read' '(' ')' ';'          # ReadAssign
+        |   'if' '(' cond ')' thenBlock=block
+            ('else' elseBlock=block)?           # IfElse
+        |   'write' '(' expr ')' ';'            # Write
+        ;
+
+calc2   :   (stmt)+ EOF;
+cond    :   expr ('=='|'!='|'>'|'>='|'<'|'<=') expr ;
+block   :   '{' (stmt)* '}' ;
+
+calc3   :   (stmt)+ EOF;
+
+WS  : [ \t\r\n]+ -> skip;
+INT : [0-9]+ ;
+VAR : [A-Za-z]+ ;
+```
+* L12에 `read()`를 할 수 있는 문법을 추가 (수식의 일부가 되는걸 막기 위해 변수에 저장)
+* L14에 `write()`를 할 수 있는 문법을 추가 (문장 중 하나로 함수 호출만 지원, 값은 수식이 될 수 있음)
+* L22에 Calc3 프로그램의 문법을 선언 (Calc1, Calc2와 동일) 
+
+### 구현 과제 #1
+
+1. Hello world처럼 지정된 값을 출력하는 프로그램을 실행할 수 있게 한다.
+2. Echo처럼 변수를 입력 받고 즉시 다시 출력하는 프로그램을 실행할 수 있게 한다.
+3. Calc-3를 지원하는 인터프리터가 CLI 실행 파일/script 파일로 생성되어야 한다.
+4. `$ calc3 test.cp`처럼 인터프리터 실행의 인자로 Calc3 소스 경로를 입력받는다.
+5. 이후 `read()`에 의한 사용자의 입력은 stdin으로 입력받는다.
+6. `write()`에 의한 프로그램의 출력은 stdout으로 출력한다.
+7. `read()`가 실패하는 경우 0으로 취급 혹은 여러 형태로 프로그램을 강제 종료한다. (stdin의 입력이 더 없거나, 유효한 숫자가 아님)
+
+고려사항
+
+* 각 언어의 test framework를 최대한 활용하고, CLI는 단순한 연결 위주로 개발한다.
+* 각 테스트의 입력은 코드와 사용자 입력 값이며, 결과는 프로그램의 출력과 비교한다.
+* 이번 과제는 문법과 시맨틱의 난이도보다 IO 연동 처리에 집중하는 과제다.
+
+### 구현 과제 #2
+
+구현과제 1번은 Hello world 부터 Echo까지 입출력에만 집중했다.
+이제 기존 Calc-2까지 구현했던 수식 연산, 변수 읽기/쓰기, 분기문 까지 연동한다.
