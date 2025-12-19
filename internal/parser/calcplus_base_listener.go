@@ -68,11 +68,23 @@ func (s *BaseCalcPlusListener) EnterExprAssign(ctx *ExprAssignContext) {}
 // ExitExprAssign is called when production ExprAssign is exited.
 func (s *BaseCalcPlusListener) ExitExprAssign(ctx *ExprAssignContext) {}
 
+// EnterReadAssign is called when production ReadAssign is entered.
+func (s *BaseCalcPlusListener) EnterReadAssign(ctx *ReadAssignContext) {}
+
+// ExitReadAssign is called when production ReadAssign is exited.
+func (s *BaseCalcPlusListener) ExitReadAssign(ctx *ReadAssignContext) {}
+
 // EnterIfElse is called when production IfElse is entered.
 func (s *BaseCalcPlusListener) EnterIfElse(ctx *IfElseContext) {}
 
 // ExitIfElse is called when production IfElse is exited.
 func (s *BaseCalcPlusListener) ExitIfElse(ctx *IfElseContext) {}
+
+// EnterWrite is called when production Write is entered.
+func (s *BaseCalcPlusListener) EnterWrite(ctx *WriteContext) {}
+
+// ExitWrite is called when production Write is exited.
+func (s *BaseCalcPlusListener) ExitWrite(ctx *WriteContext) {}
 
 // EnterCalc2 is called when production calc2 is entered.
 func (s *BaseCalcPlusListener) EnterCalc2(ctx *Calc2Context) {}
@@ -91,3 +103,9 @@ func (s *BaseCalcPlusListener) EnterBlock(ctx *BlockContext) {}
 
 // ExitBlock is called when production block is exited.
 func (s *BaseCalcPlusListener) ExitBlock(ctx *BlockContext) {}
+
+// EnterCalc3 is called when production calc3 is entered.
+func (s *BaseCalcPlusListener) EnterCalc3(ctx *Calc3Context) {}
+
+// ExitCalc3 is called when production calc3 is exited.
+func (s *BaseCalcPlusListener) ExitCalc3(ctx *Calc3Context) {}

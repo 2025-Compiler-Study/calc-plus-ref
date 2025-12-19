@@ -31,8 +31,14 @@ type CalcPlusListener interface {
 	// EnterExprAssign is called when entering the ExprAssign production.
 	EnterExprAssign(c *ExprAssignContext)
 
+	// EnterReadAssign is called when entering the ReadAssign production.
+	EnterReadAssign(c *ReadAssignContext)
+
 	// EnterIfElse is called when entering the IfElse production.
 	EnterIfElse(c *IfElseContext)
+
+	// EnterWrite is called when entering the Write production.
+	EnterWrite(c *WriteContext)
 
 	// EnterCalc2 is called when entering the calc2 production.
 	EnterCalc2(c *Calc2Context)
@@ -42,6 +48,9 @@ type CalcPlusListener interface {
 
 	// EnterBlock is called when entering the block production.
 	EnterBlock(c *BlockContext)
+
+	// EnterCalc3 is called when entering the calc3 production.
+	EnterCalc3(c *Calc3Context)
 
 	// ExitCalc0 is called when exiting the calc0 production.
 	ExitCalc0(c *Calc0Context)
@@ -67,8 +76,14 @@ type CalcPlusListener interface {
 	// ExitExprAssign is called when exiting the ExprAssign production.
 	ExitExprAssign(c *ExprAssignContext)
 
+	// ExitReadAssign is called when exiting the ReadAssign production.
+	ExitReadAssign(c *ReadAssignContext)
+
 	// ExitIfElse is called when exiting the IfElse production.
 	ExitIfElse(c *IfElseContext)
+
+	// ExitWrite is called when exiting the Write production.
+	ExitWrite(c *WriteContext)
 
 	// ExitCalc2 is called when exiting the calc2 production.
 	ExitCalc2(c *Calc2Context)
@@ -78,4 +93,7 @@ type CalcPlusListener interface {
 
 	// ExitBlock is called when exiting the block production.
 	ExitBlock(c *BlockContext)
+
+	// ExitCalc3 is called when exiting the calc3 production.
+	ExitCalc3(c *Calc3Context)
 }

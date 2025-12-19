@@ -32,50 +32,60 @@ var CalcPlusParserStaticData struct {
 func calcplusParserInit() {
 	staticData := &CalcPlusParserStaticData
 	staticData.LiteralNames = []string{
-		"", "'*'", "'/'", "'+'", "'-'", "'('", "')'", "'='", "';'", "'if'",
-		"'else'", "'=='", "'!='", "'>'", "'>='", "'<'", "'<='", "'{'", "'}'",
+		"", "'*'", "'/'", "'+'", "'-'", "'('", "')'", "'='", "';'", "'read'",
+		"'if'", "'else'", "'write'", "'=='", "'!='", "'>'", "'>='", "'<'", "'<='",
+		"'{'", "'}'",
 	}
 	staticData.SymbolicNames = []string{
 		"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-		"", "", "WS", "INT", "VAR",
+		"", "", "", "", "WS", "INT", "VAR",
 	}
 	staticData.RuleNames = []string{
-		"calc0", "expr", "calc1", "stmt", "calc2", "cond", "block",
+		"calc0", "expr", "calc1", "stmt", "calc2", "cond", "block", "calc3",
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 21, 81, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
-		4, 2, 5, 7, 5, 2, 6, 7, 6, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 3, 1, 25, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1,
-		33, 8, 1, 10, 1, 12, 1, 36, 9, 1, 1, 2, 4, 2, 39, 8, 2, 11, 2, 12, 2, 40,
-		1, 2, 1, 2, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3,
-		1, 3, 1, 3, 3, 3, 57, 8, 3, 3, 3, 59, 8, 3, 1, 4, 4, 4, 62, 8, 4, 11, 4,
-		12, 4, 63, 1, 4, 1, 4, 1, 5, 1, 5, 1, 5, 1, 5, 1, 6, 1, 6, 5, 6, 74, 8,
-		6, 10, 6, 12, 6, 77, 9, 6, 1, 6, 1, 6, 1, 6, 0, 1, 2, 7, 0, 2, 4, 6, 8,
-		10, 12, 0, 3, 1, 0, 1, 2, 1, 0, 3, 4, 1, 0, 11, 16, 82, 0, 14, 1, 0, 0,
-		0, 2, 24, 1, 0, 0, 0, 4, 38, 1, 0, 0, 0, 6, 58, 1, 0, 0, 0, 8, 61, 1, 0,
-		0, 0, 10, 67, 1, 0, 0, 0, 12, 71, 1, 0, 0, 0, 14, 15, 3, 2, 1, 0, 15, 16,
-		5, 0, 0, 1, 16, 1, 1, 0, 0, 0, 17, 18, 6, 1, -1, 0, 18, 25, 5, 20, 0, 0,
-		19, 25, 5, 21, 0, 0, 20, 21, 5, 5, 0, 0, 21, 22, 3, 2, 1, 0, 22, 23, 5,
-		6, 0, 0, 23, 25, 1, 0, 0, 0, 24, 17, 1, 0, 0, 0, 24, 19, 1, 0, 0, 0, 24,
-		20, 1, 0, 0, 0, 25, 34, 1, 0, 0, 0, 26, 27, 10, 5, 0, 0, 27, 28, 7, 0,
-		0, 0, 28, 33, 3, 2, 1, 6, 29, 30, 10, 4, 0, 0, 30, 31, 7, 1, 0, 0, 31,
-		33, 3, 2, 1, 5, 32, 26, 1, 0, 0, 0, 32, 29, 1, 0, 0, 0, 33, 36, 1, 0, 0,
-		0, 34, 32, 1, 0, 0, 0, 34, 35, 1, 0, 0, 0, 35, 3, 1, 0, 0, 0, 36, 34, 1,
-		0, 0, 0, 37, 39, 3, 6, 3, 0, 38, 37, 1, 0, 0, 0, 39, 40, 1, 0, 0, 0, 40,
-		38, 1, 0, 0, 0, 40, 41, 1, 0, 0, 0, 41, 42, 1, 0, 0, 0, 42, 43, 5, 0, 0,
-		1, 43, 5, 1, 0, 0, 0, 44, 45, 5, 21, 0, 0, 45, 46, 5, 7, 0, 0, 46, 47,
-		3, 2, 1, 0, 47, 48, 5, 8, 0, 0, 48, 59, 1, 0, 0, 0, 49, 50, 5, 9, 0, 0,
-		50, 51, 5, 5, 0, 0, 51, 52, 3, 10, 5, 0, 52, 53, 5, 6, 0, 0, 53, 56, 3,
-		12, 6, 0, 54, 55, 5, 10, 0, 0, 55, 57, 3, 12, 6, 0, 56, 54, 1, 0, 0, 0,
-		56, 57, 1, 0, 0, 0, 57, 59, 1, 0, 0, 0, 58, 44, 1, 0, 0, 0, 58, 49, 1,
-		0, 0, 0, 59, 7, 1, 0, 0, 0, 60, 62, 3, 6, 3, 0, 61, 60, 1, 0, 0, 0, 62,
-		63, 1, 0, 0, 0, 63, 61, 1, 0, 0, 0, 63, 64, 1, 0, 0, 0, 64, 65, 1, 0, 0,
-		0, 65, 66, 5, 0, 0, 1, 66, 9, 1, 0, 0, 0, 67, 68, 3, 2, 1, 0, 68, 69, 7,
-		2, 0, 0, 69, 70, 3, 2, 1, 0, 70, 11, 1, 0, 0, 0, 71, 75, 5, 17, 0, 0, 72,
-		74, 3, 6, 3, 0, 73, 72, 1, 0, 0, 0, 74, 77, 1, 0, 0, 0, 75, 73, 1, 0, 0,
-		0, 75, 76, 1, 0, 0, 0, 76, 78, 1, 0, 0, 0, 77, 75, 1, 0, 0, 0, 78, 79,
-		5, 18, 0, 0, 79, 13, 1, 0, 0, 0, 8, 24, 32, 34, 40, 56, 58, 63, 75,
+		4, 1, 23, 102, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 27, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 5, 1, 35, 8, 1, 10, 1, 12, 1, 38, 9, 1, 1, 2, 4, 2, 41, 8, 2, 11,
+		2, 12, 2, 42, 1, 2, 1, 2, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1,
+		3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 3, 3, 65,
+		8, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 3, 3, 73, 8, 3, 1, 4, 4, 4, 76,
+		8, 4, 11, 4, 12, 4, 77, 1, 4, 1, 4, 1, 5, 1, 5, 1, 5, 1, 5, 1, 6, 1, 6,
+		5, 6, 88, 8, 6, 10, 6, 12, 6, 91, 9, 6, 1, 6, 1, 6, 1, 7, 4, 7, 96, 8,
+		7, 11, 7, 12, 7, 97, 1, 7, 1, 7, 1, 7, 0, 1, 2, 8, 0, 2, 4, 6, 8, 10, 12,
+		14, 0, 3, 1, 0, 1, 2, 1, 0, 3, 4, 1, 0, 13, 18, 105, 0, 16, 1, 0, 0, 0,
+		2, 26, 1, 0, 0, 0, 4, 40, 1, 0, 0, 0, 6, 72, 1, 0, 0, 0, 8, 75, 1, 0, 0,
+		0, 10, 81, 1, 0, 0, 0, 12, 85, 1, 0, 0, 0, 14, 95, 1, 0, 0, 0, 16, 17,
+		3, 2, 1, 0, 17, 18, 5, 0, 0, 1, 18, 1, 1, 0, 0, 0, 19, 20, 6, 1, -1, 0,
+		20, 27, 5, 22, 0, 0, 21, 27, 5, 23, 0, 0, 22, 23, 5, 5, 0, 0, 23, 24, 3,
+		2, 1, 0, 24, 25, 5, 6, 0, 0, 25, 27, 1, 0, 0, 0, 26, 19, 1, 0, 0, 0, 26,
+		21, 1, 0, 0, 0, 26, 22, 1, 0, 0, 0, 27, 36, 1, 0, 0, 0, 28, 29, 10, 5,
+		0, 0, 29, 30, 7, 0, 0, 0, 30, 35, 3, 2, 1, 6, 31, 32, 10, 4, 0, 0, 32,
+		33, 7, 1, 0, 0, 33, 35, 3, 2, 1, 5, 34, 28, 1, 0, 0, 0, 34, 31, 1, 0, 0,
+		0, 35, 38, 1, 0, 0, 0, 36, 34, 1, 0, 0, 0, 36, 37, 1, 0, 0, 0, 37, 3, 1,
+		0, 0, 0, 38, 36, 1, 0, 0, 0, 39, 41, 3, 6, 3, 0, 40, 39, 1, 0, 0, 0, 41,
+		42, 1, 0, 0, 0, 42, 40, 1, 0, 0, 0, 42, 43, 1, 0, 0, 0, 43, 44, 1, 0, 0,
+		0, 44, 45, 5, 0, 0, 1, 45, 5, 1, 0, 0, 0, 46, 47, 5, 23, 0, 0, 47, 48,
+		5, 7, 0, 0, 48, 49, 3, 2, 1, 0, 49, 50, 5, 8, 0, 0, 50, 73, 1, 0, 0, 0,
+		51, 52, 5, 23, 0, 0, 52, 53, 5, 7, 0, 0, 53, 54, 5, 9, 0, 0, 54, 55, 5,
+		5, 0, 0, 55, 56, 5, 6, 0, 0, 56, 73, 5, 8, 0, 0, 57, 58, 5, 10, 0, 0, 58,
+		59, 5, 5, 0, 0, 59, 60, 3, 10, 5, 0, 60, 61, 5, 6, 0, 0, 61, 64, 3, 12,
+		6, 0, 62, 63, 5, 11, 0, 0, 63, 65, 3, 12, 6, 0, 64, 62, 1, 0, 0, 0, 64,
+		65, 1, 0, 0, 0, 65, 73, 1, 0, 0, 0, 66, 67, 5, 12, 0, 0, 67, 68, 5, 5,
+		0, 0, 68, 69, 3, 2, 1, 0, 69, 70, 5, 6, 0, 0, 70, 71, 5, 8, 0, 0, 71, 73,
+		1, 0, 0, 0, 72, 46, 1, 0, 0, 0, 72, 51, 1, 0, 0, 0, 72, 57, 1, 0, 0, 0,
+		72, 66, 1, 0, 0, 0, 73, 7, 1, 0, 0, 0, 74, 76, 3, 6, 3, 0, 75, 74, 1, 0,
+		0, 0, 76, 77, 1, 0, 0, 0, 77, 75, 1, 0, 0, 0, 77, 78, 1, 0, 0, 0, 78, 79,
+		1, 0, 0, 0, 79, 80, 5, 0, 0, 1, 80, 9, 1, 0, 0, 0, 81, 82, 3, 2, 1, 0,
+		82, 83, 7, 2, 0, 0, 83, 84, 3, 2, 1, 0, 84, 11, 1, 0, 0, 0, 85, 89, 5,
+		19, 0, 0, 86, 88, 3, 6, 3, 0, 87, 86, 1, 0, 0, 0, 88, 91, 1, 0, 0, 0, 89,
+		87, 1, 0, 0, 0, 89, 90, 1, 0, 0, 0, 90, 92, 1, 0, 0, 0, 91, 89, 1, 0, 0,
+		0, 92, 93, 5, 20, 0, 0, 93, 13, 1, 0, 0, 0, 94, 96, 3, 6, 3, 0, 95, 94,
+		1, 0, 0, 0, 96, 97, 1, 0, 0, 0, 97, 95, 1, 0, 0, 0, 97, 98, 1, 0, 0, 0,
+		98, 99, 1, 0, 0, 0, 99, 100, 5, 0, 0, 1, 100, 15, 1, 0, 0, 0, 9, 26, 34,
+		36, 42, 64, 72, 77, 89, 97,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -132,9 +142,11 @@ const (
 	CalcPlusParserT__15 = 16
 	CalcPlusParserT__16 = 17
 	CalcPlusParserT__17 = 18
-	CalcPlusParserWS    = 19
-	CalcPlusParserINT   = 20
-	CalcPlusParserVAR   = 21
+	CalcPlusParserT__18 = 19
+	CalcPlusParserT__19 = 20
+	CalcPlusParserWS    = 21
+	CalcPlusParserINT   = 22
+	CalcPlusParserVAR   = 23
 )
 
 // CalcPlusParser rules.
@@ -146,6 +158,7 @@ const (
 	CalcPlusParserRULE_calc2 = 4
 	CalcPlusParserRULE_cond  = 5
 	CalcPlusParserRULE_block = 6
+	CalcPlusParserRULE_calc3 = 7
 )
 
 // ICalc0Context is an interface to support dynamic dispatch.
@@ -250,11 +263,11 @@ func (p *CalcPlusParser) Calc0() (localctx ICalc0Context) {
 	p.EnterRule(localctx, 0, CalcPlusParserRULE_calc0)
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(14)
+		p.SetState(16)
 		p.expr(0)
 	}
 	{
-		p.SetState(15)
+		p.SetState(17)
 		p.Match(CalcPlusParserEOF)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -653,7 +666,7 @@ func (p *CalcPlusParser) expr(_p int) (localctx IExprContext) {
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(24)
+	p.SetState(26)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -666,7 +679,7 @@ func (p *CalcPlusParser) expr(_p int) (localctx IExprContext) {
 		_prevctx = localctx
 
 		{
-			p.SetState(18)
+			p.SetState(20)
 			p.Match(CalcPlusParserINT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -679,7 +692,7 @@ func (p *CalcPlusParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(19)
+			p.SetState(21)
 			p.Match(CalcPlusParserVAR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -692,7 +705,7 @@ func (p *CalcPlusParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(20)
+			p.SetState(22)
 			p.Match(CalcPlusParserT__4)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -700,11 +713,11 @@ func (p *CalcPlusParser) expr(_p int) (localctx IExprContext) {
 			}
 		}
 		{
-			p.SetState(21)
+			p.SetState(23)
 			p.expr(0)
 		}
 		{
-			p.SetState(22)
+			p.SetState(24)
 			p.Match(CalcPlusParserT__5)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -717,7 +730,7 @@ func (p *CalcPlusParser) expr(_p int) (localctx IExprContext) {
 		goto errorExit
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(34)
+	p.SetState(36)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -732,7 +745,7 @@ func (p *CalcPlusParser) expr(_p int) (localctx IExprContext) {
 				p.TriggerExitRuleEvent()
 			}
 			_prevctx = localctx
-			p.SetState(32)
+			p.SetState(34)
 			p.GetErrorHandler().Sync(p)
 			if p.HasError() {
 				goto errorExit
@@ -742,14 +755,14 @@ func (p *CalcPlusParser) expr(_p int) (localctx IExprContext) {
 			case 1:
 				localctx = NewMulDivContext(p, NewExprContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, CalcPlusParserRULE_expr)
-				p.SetState(26)
+				p.SetState(28)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(27)
+					p.SetState(29)
 					_la = p.GetTokenStream().LA(1)
 
 					if !(_la == CalcPlusParserT__0 || _la == CalcPlusParserT__1) {
@@ -760,21 +773,21 @@ func (p *CalcPlusParser) expr(_p int) (localctx IExprContext) {
 					}
 				}
 				{
-					p.SetState(28)
+					p.SetState(30)
 					p.expr(6)
 				}
 
 			case 2:
 				localctx = NewAddSubContext(p, NewExprContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, CalcPlusParserRULE_expr)
-				p.SetState(29)
+				p.SetState(31)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 4)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(30)
+					p.SetState(32)
 					_la = p.GetTokenStream().LA(1)
 
 					if !(_la == CalcPlusParserT__2 || _la == CalcPlusParserT__3) {
@@ -785,7 +798,7 @@ func (p *CalcPlusParser) expr(_p int) (localctx IExprContext) {
 					}
 				}
 				{
-					p.SetState(31)
+					p.SetState(33)
 					p.expr(5)
 				}
 
@@ -794,7 +807,7 @@ func (p *CalcPlusParser) expr(_p int) (localctx IExprContext) {
 			}
 
 		}
-		p.SetState(36)
+		p.SetState(38)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -947,20 +960,20 @@ func (p *CalcPlusParser) Calc1() (localctx ICalc1Context) {
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(38)
+	p.SetState(40)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	for ok := true; ok; ok = _la == CalcPlusParserT__8 || _la == CalcPlusParserVAR {
+	for ok := true; ok; ok = ((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&8393728) != 0) {
 		{
-			p.SetState(37)
+			p.SetState(39)
 			p.Stmt()
 		}
 
-		p.SetState(40)
+		p.SetState(42)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -968,7 +981,7 @@ func (p *CalcPlusParser) Calc1() (localctx ICalc1Context) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(42)
+		p.SetState(44)
 		p.Match(CalcPlusParserEOF)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1041,6 +1054,62 @@ func (s *StmtContext) GetRuleContext() antlr.RuleContext {
 
 func (s *StmtContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
 	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+type WriteContext struct {
+	StmtContext
+}
+
+func NewWriteContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *WriteContext {
+	var p = new(WriteContext)
+
+	InitEmptyStmtContext(&p.StmtContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*StmtContext))
+
+	return p
+}
+
+func (s *WriteContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *WriteContext) Expr() IExprContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExprContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IExprContext)
+}
+
+func (s *WriteContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(CalcPlusListener); ok {
+		listenerT.EnterWrite(s)
+	}
+}
+
+func (s *WriteContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(CalcPlusListener); ok {
+		listenerT.ExitWrite(s)
+	}
+}
+
+func (s *WriteContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case CalcPlusVisitor:
+		return t.VisitWrite(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
 }
 
 type IfElseContext struct {
@@ -1150,6 +1219,50 @@ func (s *IfElseContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 	}
 }
 
+type ReadAssignContext struct {
+	StmtContext
+}
+
+func NewReadAssignContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ReadAssignContext {
+	var p = new(ReadAssignContext)
+
+	InitEmptyStmtContext(&p.StmtContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*StmtContext))
+
+	return p
+}
+
+func (s *ReadAssignContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ReadAssignContext) VAR() antlr.TerminalNode {
+	return s.GetToken(CalcPlusParserVAR, 0)
+}
+
+func (s *ReadAssignContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(CalcPlusListener); ok {
+		listenerT.EnterReadAssign(s)
+	}
+}
+
+func (s *ReadAssignContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(CalcPlusListener); ok {
+		listenerT.ExitReadAssign(s)
+	}
+}
+
+func (s *ReadAssignContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case CalcPlusVisitor:
+		return t.VisitReadAssign(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
 type ExprAssignContext struct {
 	StmtContext
 }
@@ -1215,18 +1328,18 @@ func (p *CalcPlusParser) Stmt() (localctx IStmtContext) {
 	p.EnterRule(localctx, 6, CalcPlusParserRULE_stmt)
 	var _la int
 
-	p.SetState(58)
+	p.SetState(72)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 
-	switch p.GetTokenStream().LA(1) {
-	case CalcPlusParserVAR:
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 5, p.GetParserRuleContext()) {
+	case 1:
 		localctx = NewExprAssignContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(44)
+			p.SetState(46)
 			p.Match(CalcPlusParserVAR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1234,7 +1347,7 @@ func (p *CalcPlusParser) Stmt() (localctx IStmtContext) {
 			}
 		}
 		{
-			p.SetState(45)
+			p.SetState(47)
 			p.Match(CalcPlusParserT__6)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1242,11 +1355,11 @@ func (p *CalcPlusParser) Stmt() (localctx IStmtContext) {
 			}
 		}
 		{
-			p.SetState(46)
+			p.SetState(48)
 			p.expr(0)
 		}
 		{
-			p.SetState(47)
+			p.SetState(49)
 			p.Match(CalcPlusParserT__7)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1254,32 +1367,20 @@ func (p *CalcPlusParser) Stmt() (localctx IStmtContext) {
 			}
 		}
 
-	case CalcPlusParserT__8:
-		localctx = NewIfElseContext(p, localctx)
+	case 2:
+		localctx = NewReadAssignContext(p, localctx)
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(49)
-			p.Match(CalcPlusParserT__8)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-		{
-			p.SetState(50)
-			p.Match(CalcPlusParserT__4)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-		{
 			p.SetState(51)
-			p.Cond()
+			p.Match(CalcPlusParserVAR)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 		{
 			p.SetState(52)
-			p.Match(CalcPlusParserT__5)
+			p.Match(CalcPlusParserT__6)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
@@ -1287,29 +1388,93 @@ func (p *CalcPlusParser) Stmt() (localctx IStmtContext) {
 		}
 		{
 			p.SetState(53)
+			p.Match(CalcPlusParserT__8)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(54)
+			p.Match(CalcPlusParserT__4)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(55)
+			p.Match(CalcPlusParserT__5)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(56)
+			p.Match(CalcPlusParserT__7)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+
+	case 3:
+		localctx = NewIfElseContext(p, localctx)
+		p.EnterOuterAlt(localctx, 3)
+		{
+			p.SetState(57)
+			p.Match(CalcPlusParserT__9)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(58)
+			p.Match(CalcPlusParserT__4)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(59)
+			p.Cond()
+		}
+		{
+			p.SetState(60)
+			p.Match(CalcPlusParserT__5)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(61)
 
 			var _x = p.Block()
 
 			localctx.(*IfElseContext).thenBlock = _x
 		}
-		p.SetState(56)
+		p.SetState(64)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
 		}
 		_la = p.GetTokenStream().LA(1)
 
-		if _la == CalcPlusParserT__9 {
+		if _la == CalcPlusParserT__10 {
 			{
-				p.SetState(54)
-				p.Match(CalcPlusParserT__9)
+				p.SetState(62)
+				p.Match(CalcPlusParserT__10)
 				if p.HasError() {
 					// Recognition error - abort rule
 					goto errorExit
 				}
 			}
 			{
-				p.SetState(55)
+				p.SetState(63)
 
 				var _x = p.Block()
 
@@ -1318,8 +1483,47 @@ func (p *CalcPlusParser) Stmt() (localctx IStmtContext) {
 
 		}
 
-	default:
-		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+	case 4:
+		localctx = NewWriteContext(p, localctx)
+		p.EnterOuterAlt(localctx, 4)
+		{
+			p.SetState(66)
+			p.Match(CalcPlusParserT__11)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(67)
+			p.Match(CalcPlusParserT__4)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(68)
+			p.expr(0)
+		}
+		{
+			p.SetState(69)
+			p.Match(CalcPlusParserT__5)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(70)
+			p.Match(CalcPlusParserT__7)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+
+	case antlr.ATNInvalidAltNumber:
 		goto errorExit
 	}
 
@@ -1465,20 +1669,20 @@ func (p *CalcPlusParser) Calc2() (localctx ICalc2Context) {
 	var _la int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(61)
+	p.SetState(75)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	for ok := true; ok; ok = _la == CalcPlusParserT__8 || _la == CalcPlusParserVAR {
+	for ok := true; ok; ok = ((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&8393728) != 0) {
 		{
-			p.SetState(60)
+			p.SetState(74)
 			p.Stmt()
 		}
 
-		p.SetState(63)
+		p.SetState(77)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -1486,7 +1690,7 @@ func (p *CalcPlusParser) Calc2() (localctx ICalc2Context) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(65)
+		p.SetState(79)
 		p.Match(CalcPlusParserEOF)
 		if p.HasError() {
 			// Recognition error - abort rule
@@ -1632,14 +1836,14 @@ func (p *CalcPlusParser) Cond() (localctx ICondContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(67)
+		p.SetState(81)
 		p.expr(0)
 	}
 	{
-		p.SetState(68)
+		p.SetState(82)
 		_la = p.GetTokenStream().LA(1)
 
-		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&129024) != 0) {
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&516096) != 0) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -1647,7 +1851,7 @@ func (p *CalcPlusParser) Cond() (localctx ICondContext) {
 		}
 	}
 	{
-		p.SetState(69)
+		p.SetState(83)
 		p.expr(0)
 	}
 
@@ -1789,27 +1993,27 @@ func (p *CalcPlusParser) Block() (localctx IBlockContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(71)
-		p.Match(CalcPlusParserT__16)
+		p.SetState(85)
+		p.Match(CalcPlusParserT__18)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(75)
+	p.SetState(89)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 	_la = p.GetTokenStream().LA(1)
 
-	for _la == CalcPlusParserT__8 || _la == CalcPlusParserVAR {
+	for (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&8393728) != 0 {
 		{
-			p.SetState(72)
+			p.SetState(86)
 			p.Stmt()
 		}
 
-		p.SetState(77)
+		p.SetState(91)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -1817,8 +2021,179 @@ func (p *CalcPlusParser) Block() (localctx IBlockContext) {
 		_la = p.GetTokenStream().LA(1)
 	}
 	{
-		p.SetState(78)
-		p.Match(CalcPlusParserT__17)
+		p.SetState(92)
+		p.Match(CalcPlusParserT__19)
+		if p.HasError() {
+			// Recognition error - abort rule
+			goto errorExit
+		}
+	}
+
+errorExit:
+	if p.HasError() {
+		v := p.GetError()
+		localctx.SetException(v)
+		p.GetErrorHandler().ReportError(p, v)
+		p.GetErrorHandler().Recover(p, v)
+		p.SetError(nil)
+	}
+	p.ExitRule()
+	return localctx
+	goto errorExit // Trick to prevent compiler error if the label is not used
+}
+
+// ICalc3Context is an interface to support dynamic dispatch.
+type ICalc3Context interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Getter signatures
+	EOF() antlr.TerminalNode
+	AllStmt() []IStmtContext
+	Stmt(i int) IStmtContext
+
+	// IsCalc3Context differentiates from other interfaces.
+	IsCalc3Context()
+}
+
+type Calc3Context struct {
+	antlr.BaseParserRuleContext
+	parser antlr.Parser
+}
+
+func NewEmptyCalc3Context() *Calc3Context {
+	var p = new(Calc3Context)
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = CalcPlusParserRULE_calc3
+	return p
+}
+
+func InitEmptyCalc3Context(p *Calc3Context) {
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, nil, -1)
+	p.RuleIndex = CalcPlusParserRULE_calc3
+}
+
+func (*Calc3Context) IsCalc3Context() {}
+
+func NewCalc3Context(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *Calc3Context {
+	var p = new(Calc3Context)
+
+	antlr.InitBaseParserRuleContext(&p.BaseParserRuleContext, parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = CalcPlusParserRULE_calc3
+
+	return p
+}
+
+func (s *Calc3Context) GetParser() antlr.Parser { return s.parser }
+
+func (s *Calc3Context) EOF() antlr.TerminalNode {
+	return s.GetToken(CalcPlusParserEOF, 0)
+}
+
+func (s *Calc3Context) AllStmt() []IStmtContext {
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IStmtContext); ok {
+			len++
+		}
+	}
+
+	tst := make([]IStmtContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IStmtContext); ok {
+			tst[i] = t.(IStmtContext)
+			i++
+		}
+	}
+
+	return tst
+}
+
+func (s *Calc3Context) Stmt(i int) IStmtContext {
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IStmtContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IStmtContext)
+}
+
+func (s *Calc3Context) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *Calc3Context) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *Calc3Context) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(CalcPlusListener); ok {
+		listenerT.EnterCalc3(s)
+	}
+}
+
+func (s *Calc3Context) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(CalcPlusListener); ok {
+		listenerT.ExitCalc3(s)
+	}
+}
+
+func (s *Calc3Context) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case CalcPlusVisitor:
+		return t.VisitCalc3(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+func (p *CalcPlusParser) Calc3() (localctx ICalc3Context) {
+	localctx = NewCalc3Context(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 14, CalcPlusParserRULE_calc3)
+	var _la int
+
+	p.EnterOuterAlt(localctx, 1)
+	p.SetState(95)
+	p.GetErrorHandler().Sync(p)
+	if p.HasError() {
+		goto errorExit
+	}
+	_la = p.GetTokenStream().LA(1)
+
+	for ok := true; ok; ok = ((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&8393728) != 0) {
+		{
+			p.SetState(94)
+			p.Stmt()
+		}
+
+		p.SetState(97)
+		p.GetErrorHandler().Sync(p)
+		if p.HasError() {
+			goto errorExit
+		}
+		_la = p.GetTokenStream().LA(1)
+	}
+	{
+		p.SetState(99)
+		p.Match(CalcPlusParserEOF)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit

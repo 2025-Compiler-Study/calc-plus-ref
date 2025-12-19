@@ -39,7 +39,15 @@ func (v *BaseCalcPlusVisitor) VisitExprAssign(ctx *ExprAssignContext) interface{
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseCalcPlusVisitor) VisitReadAssign(ctx *ReadAssignContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseCalcPlusVisitor) VisitIfElse(ctx *IfElseContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitWrite(ctx *WriteContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -52,5 +60,9 @@ func (v *BaseCalcPlusVisitor) VisitCond(ctx *CondContext) interface{} {
 }
 
 func (v *BaseCalcPlusVisitor) VisitBlock(ctx *BlockContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitCalc3(ctx *Calc3Context) interface{} {
 	return v.VisitChildren(ctx)
 }
