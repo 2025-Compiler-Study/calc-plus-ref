@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2018",            // 최신 자바스크립트 문법 지원
+    "module": "commonjs",          // Node.js는 기본적으로 CommonJS 방식을 씀
+    "lib": ["es2018"],
+    "rootDir": "./",
+    "outDir": "./dist",
+    "strict": true,                // 타입 체크를 엄격하게 (버그 예방)
+    "esModuleInterop": true,       // 'import * as fs' 같은 문법 허용 (중요!)
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}
