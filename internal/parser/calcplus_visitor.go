@@ -40,6 +40,12 @@ type CalcPlusVisitor interface {
 	// Visit a parse tree produced by CalcPlusParser#Write.
 	VisitWrite(ctx *WriteContext) interface{}
 
+	// Visit a parse tree produced by CalcPlusParser#Declare.
+	VisitDeclare(ctx *DeclareContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#StmtBlock.
+	VisitStmtBlock(ctx *StmtBlockContext) interface{}
+
 	// Visit a parse tree produced by CalcPlusParser#calc2.
 	VisitCalc2(ctx *Calc2Context) interface{}
 
@@ -51,4 +57,7 @@ type CalcPlusVisitor interface {
 
 	// Visit a parse tree produced by CalcPlusParser#calc3.
 	VisitCalc3(ctx *Calc3Context) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#calc4.
+	VisitCalc4(ctx *Calc4Context) interface{}
 }

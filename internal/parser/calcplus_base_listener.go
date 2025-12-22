@@ -86,6 +86,18 @@ func (s *BaseCalcPlusListener) EnterWrite(ctx *WriteContext) {}
 // ExitWrite is called when production Write is exited.
 func (s *BaseCalcPlusListener) ExitWrite(ctx *WriteContext) {}
 
+// EnterDeclare is called when production Declare is entered.
+func (s *BaseCalcPlusListener) EnterDeclare(ctx *DeclareContext) {}
+
+// ExitDeclare is called when production Declare is exited.
+func (s *BaseCalcPlusListener) ExitDeclare(ctx *DeclareContext) {}
+
+// EnterStmtBlock is called when production StmtBlock is entered.
+func (s *BaseCalcPlusListener) EnterStmtBlock(ctx *StmtBlockContext) {}
+
+// ExitStmtBlock is called when production StmtBlock is exited.
+func (s *BaseCalcPlusListener) ExitStmtBlock(ctx *StmtBlockContext) {}
+
 // EnterCalc2 is called when production calc2 is entered.
 func (s *BaseCalcPlusListener) EnterCalc2(ctx *Calc2Context) {}
 
@@ -109,3 +121,9 @@ func (s *BaseCalcPlusListener) EnterCalc3(ctx *Calc3Context) {}
 
 // ExitCalc3 is called when production calc3 is exited.
 func (s *BaseCalcPlusListener) ExitCalc3(ctx *Calc3Context) {}
+
+// EnterCalc4 is called when production calc4 is entered.
+func (s *BaseCalcPlusListener) EnterCalc4(ctx *Calc4Context) {}
+
+// ExitCalc4 is called when production calc4 is exited.
+func (s *BaseCalcPlusListener) ExitCalc4(ctx *Calc4Context) {}

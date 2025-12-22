@@ -40,6 +40,12 @@ type CalcPlusListener interface {
 	// EnterWrite is called when entering the Write production.
 	EnterWrite(c *WriteContext)
 
+	// EnterDeclare is called when entering the Declare production.
+	EnterDeclare(c *DeclareContext)
+
+	// EnterStmtBlock is called when entering the StmtBlock production.
+	EnterStmtBlock(c *StmtBlockContext)
+
 	// EnterCalc2 is called when entering the calc2 production.
 	EnterCalc2(c *Calc2Context)
 
@@ -51,6 +57,9 @@ type CalcPlusListener interface {
 
 	// EnterCalc3 is called when entering the calc3 production.
 	EnterCalc3(c *Calc3Context)
+
+	// EnterCalc4 is called when entering the calc4 production.
+	EnterCalc4(c *Calc4Context)
 
 	// ExitCalc0 is called when exiting the calc0 production.
 	ExitCalc0(c *Calc0Context)
@@ -85,6 +94,12 @@ type CalcPlusListener interface {
 	// ExitWrite is called when exiting the Write production.
 	ExitWrite(c *WriteContext)
 
+	// ExitDeclare is called when exiting the Declare production.
+	ExitDeclare(c *DeclareContext)
+
+	// ExitStmtBlock is called when exiting the StmtBlock production.
+	ExitStmtBlock(c *StmtBlockContext)
+
 	// ExitCalc2 is called when exiting the calc2 production.
 	ExitCalc2(c *Calc2Context)
 
@@ -96,4 +111,7 @@ type CalcPlusListener interface {
 
 	// ExitCalc3 is called when exiting the calc3 production.
 	ExitCalc3(c *Calc3Context)
+
+	// ExitCalc4 is called when exiting the calc4 production.
+	ExitCalc4(c *Calc4Context)
 }
