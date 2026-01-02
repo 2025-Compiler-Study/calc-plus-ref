@@ -1,4 +1,4 @@
-package calc0
+package calculator
 
 import (
 	"calcPlus/internal/parser"
@@ -6,32 +6,32 @@ import (
 	"strconv"
 )
 
-type CalculatorL struct {
+type Calc0L struct {
 	parser.BaseCalcPlusListener
 	Stack []int
 }
 
-func (c *CalculatorL) push(value int) {
+func (c *Calc0L) push(value int) {
 	c.Stack = append(c.Stack, value)
 }
 
-func (c *CalculatorL) pop() int {
+func (c *Calc0L) pop() int {
 	last := len(c.Stack) - 1
 	value := c.Stack[last]
 	c.Stack = c.Stack[:last]
 	return value
 }
 
-func (c *CalculatorL) Result() int {
+func (c *Calc0L) Result() int {
 	return c.Stack[0]
 }
 
-func (c *CalculatorL) ExitInt(ctx *parser.IntContext) {
+func (c *Calc0L) ExitInt(ctx *parser.IntContext) {
 	value, _ := strconv.Atoi(ctx.GetText())
 	c.push(value)
 }
 
-func (c *CalculatorL) ExitAddSub(ctx *parser.AddSubContext) {
+func (c *Calc0L) ExitAddSub(ctx *parser.AddSubContext) {
 	right := c.pop()
 	left := c.pop()
 
@@ -44,7 +44,7 @@ func (c *CalculatorL) ExitAddSub(ctx *parser.AddSubContext) {
 	}
 }
 
-func (c *CalculatorL) ExitMulDiv(ctx *parser.MulDivContext) {
+func (c *Calc0L) ExitMulDiv(ctx *parser.MulDivContext) {
 	right := c.pop()
 	left := c.pop()
 

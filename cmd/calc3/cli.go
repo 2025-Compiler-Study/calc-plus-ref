@@ -1,7 +1,7 @@
 package main
 
 import (
-	"calcPlus/internal/calc3"
+	"calcPlus/interpreter"
 	"fmt"
 	"os"
 )
@@ -15,8 +15,9 @@ func main() {
 	codeFile := os.Args[1]
 	code, err := os.ReadFile(codeFile)
 	if err != nil {
-		return
+		fmt.Fprintf(os.Stderr, "Failed to read file %s: %v\n", codeFile, err)
+		os.Exit(1)
 	}
 
-	calc3.RunInterpreter(string(code), os.Stdin, os.Stdout)
+	interpreter.RunCalc3Interpreter(string(code), os.Stdin, os.Stdout)
 }

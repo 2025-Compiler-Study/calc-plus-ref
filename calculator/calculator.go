@@ -1,4 +1,4 @@
-package calc2
+package calculator
 
 import (
 	"calcPlus/internal/parser"
@@ -19,7 +19,7 @@ func (c *Calculator) Visit(tree antlr.ParseTree) any {
 	return tree.Accept(c)
 }
 
-func (c *Calculator) VisitCalc2(ctx *parser.Calc2Context) any {
+func (c *Calculator) VisitProgram(ctx *parser.ProgramContext) any {
 	for _, stmt := range ctx.AllStmt() {
 		c.Visit(stmt)
 	}

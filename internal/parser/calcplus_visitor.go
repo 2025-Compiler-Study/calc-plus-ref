@@ -7,8 +7,26 @@ import "github.com/antlr4-go/antlr/v4"
 type CalcPlusVisitor interface {
 	antlr.ParseTreeVisitor
 
-	// Visit a parse tree produced by CalcPlusParser#calc0.
-	VisitCalc0(ctx *Calc0Context) interface{}
+	// Visit a parse tree produced by CalcPlusParser#program.
+	VisitProgram(ctx *ProgramContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#Declare.
+	VisitDeclare(ctx *DeclareContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#ExprAssign.
+	VisitExprAssign(ctx *ExprAssignContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#ReadAssign.
+	VisitReadAssign(ctx *ReadAssignContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#Write.
+	VisitWrite(ctx *WriteContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#IfElse.
+	VisitIfElse(ctx *IfElseContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#StmtBlock.
+	VisitStmtBlock(ctx *StmtBlockContext) interface{}
 
 	// Visit a parse tree produced by CalcPlusParser#MulDiv.
 	VisitMulDiv(ctx *MulDivContext) interface{}
@@ -25,39 +43,9 @@ type CalcPlusVisitor interface {
 	// Visit a parse tree produced by CalcPlusParser#Int.
 	VisitInt(ctx *IntContext) interface{}
 
-	// Visit a parse tree produced by CalcPlusParser#calc1.
-	VisitCalc1(ctx *Calc1Context) interface{}
-
-	// Visit a parse tree produced by CalcPlusParser#ExprAssign.
-	VisitExprAssign(ctx *ExprAssignContext) interface{}
-
-	// Visit a parse tree produced by CalcPlusParser#ReadAssign.
-	VisitReadAssign(ctx *ReadAssignContext) interface{}
-
-	// Visit a parse tree produced by CalcPlusParser#IfElse.
-	VisitIfElse(ctx *IfElseContext) interface{}
-
-	// Visit a parse tree produced by CalcPlusParser#Write.
-	VisitWrite(ctx *WriteContext) interface{}
-
-	// Visit a parse tree produced by CalcPlusParser#Declare.
-	VisitDeclare(ctx *DeclareContext) interface{}
-
-	// Visit a parse tree produced by CalcPlusParser#StmtBlock.
-	VisitStmtBlock(ctx *StmtBlockContext) interface{}
-
-	// Visit a parse tree produced by CalcPlusParser#calc2.
-	VisitCalc2(ctx *Calc2Context) interface{}
-
 	// Visit a parse tree produced by CalcPlusParser#cond.
 	VisitCond(ctx *CondContext) interface{}
 
 	// Visit a parse tree produced by CalcPlusParser#block.
 	VisitBlock(ctx *BlockContext) interface{}
-
-	// Visit a parse tree produced by CalcPlusParser#calc3.
-	VisitCalc3(ctx *Calc3Context) interface{}
-
-	// Visit a parse tree produced by CalcPlusParser#calc4.
-	VisitCalc4(ctx *Calc4Context) interface{}
 }

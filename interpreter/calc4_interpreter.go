@@ -1,40 +1,41 @@
-package calc4
+package interpreter
 
 import (
 	"calcPlus/internal/parser"
+	"calcPlus/internal/symbolTable"
 	"fmt"
 	"github.com/antlr4-go/antlr/v4"
 	"io"
 	"strconv"
 )
 
-type Interpreter struct {
+type Calc4Interpreter struct {
 	parser.BaseCalcPlusVisitor
-	SymbolTable ScopeSymbolTable
+	SymbolTable symbolTable.ScopeSymbolTable
 	Reader      io.Reader
 	Writer      io.Writer
 }
 
-func NewInterpreter(reader io.Reader, writer io.Writer) *Interpreter {
-	return &Interpreter{
-		SymbolTable: *NewScopeSymbolTable(),
+func NewCalc4Interpreter(reader io.Reader, writer io.Writer) *Calc4Interpreter {
+	return &Calc4Interpreter{
+		SymbolTable: *symbolTable.NewScopeSymbolTable(),
 		Reader:      reader,
 		Writer:      writer,
 	}
 }
 
-func (c *Interpreter) Visit(tree antlr.ParseTree) any {
+func (c *Calc4Interpreter) Visit(tree antlr.ParseTree) any {
 	return tree.Accept(c)
 }
 
-func (c *Interpreter) VisitCalc4(ctx *parser.Calc4Context) any {
+func (c *Calc4Interpreter) VisitProgram(ctx *parser.ProgramContext) any {
 	for _, stmt := range ctx.AllStmt() {
 		c.Visit(stmt)
 	}
 	return nil
 }
 
-func (c *Interpreter) VisitExprAssign(ctx *parser.ExprAssignContext) any {
+func (c *Calc4Interpreter) VisitExprAssign(ctx *parser.ExprAssignContext) any {
 	result := c.Visit(ctx.Expr()).(int)
 	err := c.SymbolTable.SetVariable(ctx.VAR().GetText(), result)
 	if err != nil {
@@ -44,7 +45,7 @@ func (c *Interpreter) VisitExprAssign(ctx *parser.ExprAssignContext) any {
 	return nil
 }
 
-func (c *Interpreter) VisitReadAssign(ctx *parser.ReadAssignContext) any {
+func (c *Calc4Interpreter) VisitReadAssign(ctx *parser.ReadAssignContext) any {
 	buffer := ""
 	_, _ = fmt.Fscanln(c.Reader, &buffer)
 
@@ -59,7 +60,7 @@ func (c *Interpreter) VisitReadAssign(ctx *parser.ReadAssignContext) any {
 	return nil
 }
 
-func (c *Interpreter) VisitIfElse(ctx *parser.IfElseContext) any {
+func (c *Calc4Interpreter) VisitIfElse(ctx *parser.IfElseContext) any {
 	if c.Visit(ctx.Cond()).(bool) {
 		c.Visit(ctx.GetThenBlock())
 	} else if ctx.GetElseBlock() != nil {
@@ -69,12 +70,12 @@ func (c *Interpreter) VisitIfElse(ctx *parser.IfElseContext) any {
 	return nil
 }
 
-func (c *Interpreter) VisitWrite(ctx *parser.WriteContext) any {
+func (c *Calc4Interpreter) VisitWrite(ctx *parser.WriteContext) any {
 	_, _ = fmt.Fprintln(c.Writer, c.Visit(ctx.Expr()).(int))
 	return nil
 }
 
-func (c *Interpreter) VisitMulDiv(ctx *parser.MulDivContext) any {
+func (c *Calc4Interpreter) VisitMulDiv(ctx *parser.MulDivContext) any {
 	left := c.Visit(ctx.Expr(0)).(int)
 	right := c.Visit(ctx.Expr(1)).(int)
 
@@ -86,7 +87,7 @@ func (c *Interpreter) VisitMulDiv(ctx *parser.MulDivContext) any {
 	}
 }
 
-func (c *Interpreter) VisitAddSub(ctx *parser.AddSubContext) any {
+func (c *Calc4Interpreter) VisitAddSub(ctx *parser.AddSubContext) any {
 	left := c.Visit(ctx.Expr(0)).(int)
 	right := c.Visit(ctx.Expr(1)).(int)
 
@@ -99,12 +100,12 @@ func (c *Interpreter) VisitAddSub(ctx *parser.AddSubContext) any {
 	}
 }
 
-func (c *Interpreter) VisitInt(ctx *parser.IntContext) any {
+func (c *Calc4Interpreter) VisitInt(ctx *parser.IntContext) any {
 	val, _ := strconv.Atoi(ctx.GetText())
 	return val
 }
 
-func (c *Interpreter) VisitVar(ctx *parser.VarContext) any {
+func (c *Calc4Interpreter) VisitVar(ctx *parser.VarContext) any {
 	value, err := c.SymbolTable.GetVariable(ctx.GetText())
 	if err != nil {
 		panic(err)
@@ -112,11 +113,11 @@ func (c *Interpreter) VisitVar(ctx *parser.VarContext) any {
 	return value
 }
 
-func (c *Interpreter) VisitParens(ctx *parser.ParensContext) any {
+func (c *Calc4Interpreter) VisitParens(ctx *parser.ParensContext) any {
 	return c.Visit(ctx.Expr()).(int)
 }
 
-func (c *Interpreter) VisitCond(ctx *parser.CondContext) any {
+func (c *Calc4Interpreter) VisitCond(ctx *parser.CondContext) any {
 	left := c.Visit(ctx.Expr(0)).(int)
 	right := c.Visit(ctx.Expr(1)).(int)
 
@@ -138,7 +139,7 @@ func (c *Interpreter) VisitCond(ctx *parser.CondContext) any {
 	return false
 }
 
-func (c *Interpreter) VisitBlock(ctx *parser.BlockContext) any {
+func (c *Calc4Interpreter) VisitBlock(ctx *parser.BlockContext) any {
 	c.SymbolTable.PushScope()
 	for _, stmt := range ctx.AllStmt() {
 		c.Visit(stmt)
@@ -147,7 +148,7 @@ func (c *Interpreter) VisitBlock(ctx *parser.BlockContext) any {
 	return nil
 }
 
-func (c *Interpreter) VisitDeclare(ctx *parser.DeclareContext) any {
+func (c *Calc4Interpreter) VisitDeclare(ctx *parser.DeclareContext) any {
 	for _, v := range ctx.AllVAR() {
 		err := c.SymbolTable.Register(v.GetText())
 		if err != nil {
@@ -157,6 +158,6 @@ func (c *Interpreter) VisitDeclare(ctx *parser.DeclareContext) any {
 	return nil
 }
 
-func (c *Interpreter) VisitStmtBlock(ctx *parser.StmtBlockContext) any {
+func (c *Calc4Interpreter) VisitStmtBlock(ctx *parser.StmtBlockContext) any {
 	return c.Visit(ctx.Block())
 }

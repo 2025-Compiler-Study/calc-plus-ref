@@ -1,4 +1,4 @@
-package calc1
+package linter
 
 import (
 	"calcPlus/internal/parser"
@@ -10,28 +10,28 @@ import (
 
 func TestLinter(t *testing.T) {
 	type testCase struct {
-		code   string
+		Code   string
 		errors []TokenPosition
 	}
 	testCases := map[string]testCase{
 		"no errors": {
-			code:   "a = 1;",
+			Code:   "a = 1;",
 			errors: nil,
 		},
 		"not assigned variable": {
-			code: "a = b + 3;",
+			Code: "a = b + 3;",
 			errors: []TokenPosition{
 				{Line: 1, Col: 4, Value: "b"},
 			},
 		},
 		"just assigned": {
-			code: "a = a + 1;",
+			Code: "a = a + 1;",
 			errors: []TokenPosition{
 				{Line: 1, Col: 4, Value: "a"},
 			},
 		},
 		"multiline errors": {
-			code: strings.Join([]string{
+			Code: strings.Join([]string{
 				"a = 4 + b;",
 				"c = c + 1;",
 			}, "\n"),
@@ -44,13 +44,13 @@ func TestLinter(t *testing.T) {
 
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
-			is := antlr.NewInputStream(tc.code)
+			is := antlr.NewInputStream(tc.Code)
 			lexer := parser.NewCalcPlusLexer(is)
 			stream := antlr.NewCommonTokenStream(lexer, 0)
 			p := parser.NewCalcPlusParser(stream)
 			l := NewLinter()
 
-			antlr.ParseTreeWalkerDefault.Walk(l, p.Calc1())
+			antlr.ParseTreeWalkerDefault.Walk(l, p.Program())
 
 			assert.Equal(t, len(tc.errors), len(l.Errors))
 			for i, e := range l.Errors {

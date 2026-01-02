@@ -1,4 +1,4 @@
-package calc4
+package symbolTable
 
 import "fmt"
 

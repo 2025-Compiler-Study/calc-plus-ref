@@ -1,4 +1,4 @@
-package calc1
+package linter
 
 import "calcPlus/internal/parser"
 

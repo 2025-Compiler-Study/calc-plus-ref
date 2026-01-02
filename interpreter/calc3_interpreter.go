@@ -1,4 +1,4 @@
-package calc3
+package interpreter
 
 import (
 	"calcPlus/internal/parser"
@@ -8,40 +8,40 @@ import (
 	"strconv"
 )
 
-type Calculator struct {
+type Calc3Interpreter struct {
 	parser.BaseCalcPlusVisitor
 	Variables map[string]int
 	Reader    io.Reader
 	Writer    io.Writer
 }
 
-func NewCalculator(reader io.Reader, writer io.Writer) *Calculator {
-	return &Calculator{
+func NewCalc3Interpreter(reader io.Reader, writer io.Writer) *Calc3Interpreter {
+	return &Calc3Interpreter{
 		Variables: make(map[string]int),
 		Reader:    reader,
 		Writer:    writer,
 	}
 }
 
-func (c *Calculator) Visit(tree antlr.ParseTree) any {
+func (c *Calc3Interpreter) Visit(tree antlr.ParseTree) any {
 	return tree.Accept(c)
 }
 
-func (c *Calculator) VisitCalc3(ctx *parser.Calc3Context) any {
+func (c *Calc3Interpreter) VisitProgram(ctx *parser.ProgramContext) any {
 	for _, stmt := range ctx.AllStmt() {
 		c.Visit(stmt)
 	}
 	return nil
 }
 
-func (c *Calculator) VisitExprAssign(ctx *parser.ExprAssignContext) any {
+func (c *Calc3Interpreter) VisitExprAssign(ctx *parser.ExprAssignContext) any {
 	result := c.Visit(ctx.Expr()).(int)
 	c.Variables[ctx.VAR().GetText()] = result
 
 	return nil
 }
 
-func (c *Calculator) VisitReadAssign(ctx *parser.ReadAssignContext) any {
+func (c *Calc3Interpreter) VisitReadAssign(ctx *parser.ReadAssignContext) any {
 	buffer := ""
 	_, _ = fmt.Fscanln(c.Reader, &buffer)
 
@@ -52,7 +52,7 @@ func (c *Calculator) VisitReadAssign(ctx *parser.ReadAssignContext) any {
 	return nil
 }
 
-func (c *Calculator) VisitIfElse(ctx *parser.IfElseContext) any {
+func (c *Calc3Interpreter) VisitIfElse(ctx *parser.IfElseContext) any {
 	if c.Visit(ctx.Cond()).(bool) {
 		c.Visit(ctx.GetThenBlock())
 	} else if ctx.GetElseBlock() != nil {
@@ -62,12 +62,12 @@ func (c *Calculator) VisitIfElse(ctx *parser.IfElseContext) any {
 	return nil
 }
 
-func (c *Calculator) VisitWrite(ctx *parser.WriteContext) any {
+func (c *Calc3Interpreter) VisitWrite(ctx *parser.WriteContext) any {
 	_, _ = fmt.Fprintln(c.Writer, c.Visit(ctx.Expr()).(int))
 	return nil
 }
 
-func (c *Calculator) VisitMulDiv(ctx *parser.MulDivContext) any {
+func (c *Calc3Interpreter) VisitMulDiv(ctx *parser.MulDivContext) any {
 	left := c.Visit(ctx.Expr(0)).(int)
 	right := c.Visit(ctx.Expr(1)).(int)
 
@@ -79,7 +79,7 @@ func (c *Calculator) VisitMulDiv(ctx *parser.MulDivContext) any {
 	}
 }
 
-func (c *Calculator) VisitAddSub(ctx *parser.AddSubContext) any {
+func (c *Calc3Interpreter) VisitAddSub(ctx *parser.AddSubContext) any {
 	left := c.Visit(ctx.Expr(0)).(int)
 	right := c.Visit(ctx.Expr(1)).(int)
 
@@ -92,20 +92,20 @@ func (c *Calculator) VisitAddSub(ctx *parser.AddSubContext) any {
 	}
 }
 
-func (c *Calculator) VisitInt(ctx *parser.IntContext) any {
+func (c *Calc3Interpreter) VisitInt(ctx *parser.IntContext) any {
 	val, _ := strconv.Atoi(ctx.GetText())
 	return val
 }
 
-func (c *Calculator) VisitVar(ctx *parser.VarContext) any {
+func (c *Calc3Interpreter) VisitVar(ctx *parser.VarContext) any {
 	return c.Variables[ctx.GetText()]
 }
 
-func (c *Calculator) VisitParens(ctx *parser.ParensContext) any {
+func (c *Calc3Interpreter) VisitParens(ctx *parser.ParensContext) any {
 	return c.Visit(ctx.Expr()).(int)
 }
 
-func (c *Calculator) VisitCond(ctx *parser.CondContext) any {
+func (c *Calc3Interpreter) VisitCond(ctx *parser.CondContext) any {
 	left := c.Visit(ctx.Expr(0)).(int)
 	right := c.Visit(ctx.Expr(1)).(int)
 
@@ -127,7 +127,7 @@ func (c *Calculator) VisitCond(ctx *parser.CondContext) any {
 	return false
 }
 
-func (c *Calculator) VisitBlock(ctx *parser.BlockContext) any {
+func (c *Calc3Interpreter) VisitBlock(ctx *parser.BlockContext) any {
 	for _, stmt := range ctx.AllStmt() {
 		c.Visit(stmt)
 	}

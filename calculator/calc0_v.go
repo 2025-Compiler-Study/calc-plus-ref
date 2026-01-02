@@ -1,4 +1,4 @@
-package calc0
+package calculator
 
 import (
 	"calcPlus/internal/parser"
@@ -6,21 +6,16 @@ import (
 	"strconv"
 )
 
-type CalculatorV struct {
+type Calc0V struct {
 	parser.BaseCalcPlusVisitor
 	Result int
 }
 
-func (c *CalculatorV) Visit(tree antlr.ParseTree) any {
+func (c *Calc0V) Visit(tree antlr.ParseTree) any {
 	return tree.Accept(c)
 }
 
-func (c *CalculatorV) VisitCalc0(ctx *parser.Calc0Context) any {
-	c.Result = c.Visit(ctx.Expr()).(int)
-	return c.Result
-}
-
-func (c *CalculatorV) VisitMulDiv(ctx *parser.MulDivContext) any {
+func (c *Calc0V) VisitMulDiv(ctx *parser.MulDivContext) any {
 	left := c.Visit(ctx.Expr(0))
 	right := c.Visit(ctx.Expr(1))
 
@@ -33,7 +28,7 @@ func (c *CalculatorV) VisitMulDiv(ctx *parser.MulDivContext) any {
 	}
 }
 
-func (c *CalculatorV) VisitAddSub(ctx *parser.AddSubContext) any {
+func (c *Calc0V) VisitAddSub(ctx *parser.AddSubContext) any {
 	left := c.Visit(ctx.Expr(0))
 	right := c.Visit(ctx.Expr(1))
 
@@ -46,11 +41,11 @@ func (c *CalculatorV) VisitAddSub(ctx *parser.AddSubContext) any {
 	}
 }
 
-func (c *CalculatorV) VisitParens(ctx *parser.ParensContext) any {
+func (c *Calc0V) VisitParens(ctx *parser.ParensContext) any {
 	return c.Visit(ctx.Expr()).(int)
 }
 
-func (c *CalculatorV) VisitInt(ctx *parser.IntContext) any {
+func (c *Calc0V) VisitInt(ctx *parser.IntContext) any {
 	val, _ := strconv.Atoi(ctx.GetText())
 	return val
 }

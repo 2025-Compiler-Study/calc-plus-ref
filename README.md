@@ -356,3 +356,41 @@ VAR : [A-Za-z]+ ;
 
 힌트1: 심볼 테이블에 `등록`, `조회`, `변경` 뿐만 아니라 `삭제` 도 되어야 한다.  
 힌트2: 블록 안에 블록을 사용하는 다중 중첩은 마치 스택을 push, pop하는 것 같다.
+
+## [Calc-5](https://github.com/2025-Compiler-Study/calc-plus-ref/tree/calc5)
+
+이번에는 언어 스펙은 건드리지 않는다.  
+이제 Parse Tree 순회 시 즉시 실행이 아닌 AST를 구성하고 실행하게 한다.
+
+```antlrv4
+grammar CalcPlus;
+
+program :   (stmt)+ EOF;
+
+stmt    :   'int' VAR (',' VAR)* ';'            # Declare
+        |   VAR '=' expr ';'                    # ExprAssign
+        |   VAR '=' 'read' '(' ')' ';'          # ReadAssign
+        |   'write' '(' expr ')' ';'            # Write
+        |   'if' '(' cond ')' thenBlock=block
+            ('else' elseBlock=block)?           # IfElse
+        |   block                               # StmtBlock
+        ;
+
+expr    :   expr ('*'|'/') expr # MulDiv
+        |   expr ('+'|'-') expr # AddSub
+        |   INT                 # Int
+        |   VAR                 # Var
+        |   '(' expr ')'        # Parens
+        ;
+
+cond    :   expr ('=='|'!='|'>'|'>='|'<'|'<=') expr ;
+block   :   '{' (stmt)* '}' ;
+
+WS  : [ \t\r\n]+ -> skip;
+INT : [0-9]+ ;
+VAR : [A-Za-z]+ ;
+```
+
+* 이제부터 프로그래밍 언어의 진입 문법은 `program`으로 통일한다.
+* 기존 `calc0`부터 `calc4`까지는 반복으로 사실상 무의미하므로 정리한다.
+* 기존 구현 및 테스트 코드는 삭제해도 된다. (문법에 맞춰 유지해보는 것도 좋음)
