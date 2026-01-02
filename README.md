@@ -6,7 +6,7 @@
 
 이에 따라, 계산기 수준의 표현력인 최소한의 언어부터 시작해서, 변수 도입, 입출력까지만 지원하는 언어를 만들려 한다.
 
-## Calc-0
+## [Calc-0](https://github.com/2025-Compiler-Study/calc-plus-ref/tree/calc0)
 
 언어 스펙은 예제의 Expr 문법에서 조금 확장한 아래 문법을 참고한다.
 
@@ -61,7 +61,7 @@ INT : [0-9]+ ;
 5. L3~L6 마지막에 `#`을 추가한 것은 각 규칙의 해석을 추가해준다. (라벨 추가 시 어떤 메서드가 생성되는지 확인해 볼 것)
 6. 실제 코드 작업 과정에서 연산자를 가져오는 방법, 좀 더 쉽게 가져올 방법을 생각해볼 것. (ANTLR 문법 수정 필요)
 
-## Calc-1
+## [Calc-1](https://github.com/2025-Compiler-Study/calc-plus-ref/tree/calc1)
 
 언어 스펙은 단순한 상수 계산만 가능하던 Calc-0에서 변수 개념을 확장해보자.
 
@@ -152,7 +152,7 @@ a = a + 1; // Line 1 Column 4 : Variable 'a' is not defined.
 2. `calc1`은 `stmt`가 여러번 반복되므로, visitor의 경우 반복 처리가 필요하다.
 3. 값을 할당하는 부분은 값을 반환하지 않는다. visitor의 경우 반환 값 검증 시 구분이 필요하다.
 
-## Calc-2
+## [Calc-2](https://github.com/2025-Compiler-Study/calc-plus-ref/tree/calc2)
 
 언어 스펙은 코드의 흐름을 제어할 수 있는 분기문을 추가해보자.
 
@@ -223,7 +223,7 @@ d = (5 - e) * 2;// a == 2, b == 3, c == 9, d == 10, e == 0
 
 힌트: 알아서 결정해보자
 
-## Calc-3
+## [Calc-3](https://github.com/2025-Compiler-Study/calc-plus-ref/tree/calc3)
 
 변수의 값 입력과 출력을 도입해보자.
 
@@ -286,7 +286,7 @@ VAR : [A-Za-z]+ ;
 구현과제 1번은 Hello world 부터 Echo까지 입출력에만 집중했다.
 이제 기존 Calc-2까지 구현했던 수식 연산, 변수 읽기/쓰기, 분기문 까지 연동한다.
 
-## Calc-4
+## [Calc-4](https://github.com/2025-Compiler-Study/calc-plus-ref/tree/calc4)
 
 이제는 변수 스코프 개념을 도입해 볼 것이다.  
 지정된 범위 안에서만 변수를 사용하고, 특정 영역에 변수를 재정의하는 섀도잉을 구현해 볼 것이다.
