@@ -2,7 +2,7 @@ package interpreter
 
 import (
 	"calcPlus/internal/parser"
-	"calcPlus/internal/symbolTable"
+	"calcPlus/internal/symbols"
 	"fmt"
 	"github.com/antlr4-go/antlr/v4"
 	"io"
@@ -11,14 +11,14 @@ import (
 
 type Calc4Interpreter struct {
 	parser.BaseCalcPlusVisitor
-	SymbolTable symbolTable.ScopeSymbolTable
+	SymbolTable symbols.ScopedTable[int]
 	Reader      io.Reader
 	Writer      io.Writer
 }
 
 func NewCalc4Interpreter(reader io.Reader, writer io.Writer) *Calc4Interpreter {
 	return &Calc4Interpreter{
-		SymbolTable: *symbolTable.NewScopeSymbolTable(),
+		SymbolTable: *symbols.NewScopedTable[int](),
 		Reader:      reader,
 		Writer:      writer,
 	}
@@ -37,7 +37,7 @@ func (c *Calc4Interpreter) VisitProgram(ctx *parser.ProgramContext) any {
 
 func (c *Calc4Interpreter) VisitExprAssign(ctx *parser.ExprAssignContext) any {
 	result := c.Visit(ctx.Expr()).(int)
-	err := c.SymbolTable.SetVariable(ctx.VAR().GetText(), result)
+	err := c.SymbolTable.SetSymbol(ctx.VAR().GetText(), result)
 	if err != nil {
 		panic(err)
 	}
@@ -52,7 +52,7 @@ func (c *Calc4Interpreter) VisitReadAssign(ctx *parser.ReadAssignContext) any {
 	varName := ctx.VAR().GetText()
 	value, _ := strconv.Atoi(buffer)
 
-	err := c.SymbolTable.SetVariable(varName, value)
+	err := c.SymbolTable.SetSymbol(varName, value)
 	if err != nil {
 		panic(err)
 	}
@@ -106,7 +106,7 @@ func (c *Calc4Interpreter) VisitInt(ctx *parser.IntContext) any {
 }
 
 func (c *Calc4Interpreter) VisitVar(ctx *parser.VarContext) any {
-	value, err := c.SymbolTable.GetVariable(ctx.GetText())
+	value, err := c.SymbolTable.GetSymbol(ctx.GetText())
 	if err != nil {
 		panic(err)
 	}
