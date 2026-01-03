@@ -48,7 +48,9 @@ func (b *BinaryOperator) Evaluate(t symbols.Table[int]) (int, error) {
 	if rErr != nil {
 		return 0, rErr
 	}
+	logicalResult := false
 	switch b.Operator {
+	// Arithmetic operators
 	case "+":
 		return left + right, nil
 	case "-":
@@ -57,9 +59,28 @@ func (b *BinaryOperator) Evaluate(t symbols.Table[int]) (int, error) {
 		return left * right, nil
 	case "/":
 		return left / right, nil
+	// Logical operators
+	case "==":
+		logicalResult = left == right
+	case "!=":
+		logicalResult = left != right
+	case ">":
+		logicalResult = left > right
+	case ">=":
+		logicalResult = left >= right
+	case "<":
+		logicalResult = left < right
+	case "<=":
+		logicalResult = left <= right
 	default:
 		return 0, fmt.Errorf("unknown operator: %s", b.Operator)
 	}
+
+	// Fallback logical operators result
+	if logicalResult {
+		return 1, nil
+	}
+	return 0, nil
 }
 func (b *BinaryOperator) String() string { return b.StringDepth(0) }
 func (b *BinaryOperator) StringDepth(d int) string {
