@@ -10,34 +10,34 @@ import (
 
 func TestExpression_String(t *testing.T) {
 	t.Run("VarExpr", func(t *testing.T) {
-		variable := VarExpression{Name: "a"}
+		variable := NewVarExpression("a")
 		fmt.Println(variable.String())
 	})
 
 	t.Run("IntExpr", func(t *testing.T) {
-		intValue := IntExpression{Value: 1}
+		intValue := NewIntExpression(1)
 		fmt.Println(intValue.String())
 	})
 
 	t.Run("BinaryOperator(Arithmetic)", func(t *testing.T) {
-		binOp := BinaryOperator{
-			Left:     &IntExpression{1},
-			Operator: "+",
-			Right:    &IntExpression{2},
-		}
+		binOp := NewBinaryOperator(
+			NewIntExpression(1),
+			"+",
+			NewIntExpression(2),
+		)
 		fmt.Println(binOp.String())
 	})
 
 	t.Run("Complex BinaryOperator", func(t *testing.T) {
-		binOp := BinaryOperator{
-			Left:     &IntExpression{1},
-			Operator: "+",
-			Right: &BinaryOperator{
-				Left:     &IntExpression{2},
-				Operator: "*",
-				Right:    &IntExpression{3},
-			},
-		}
+		binOp := NewBinaryOperator(
+			NewIntExpression(1),
+			"+",
+			NewBinaryOperator(
+				NewIntExpression(2),
+				"*",
+				NewIntExpression(3),
+			),
+		)
 		fmt.Println(binOp.String())
 	})
 }
@@ -56,14 +56,14 @@ func TestVarExpr_Evaluate(t *testing.T) {
 	}
 
 	t.Run("exist variable", func(t *testing.T) {
-		variable := VarExpression{Name: "a"}
+		variable := NewVarExpression("a")
 		val, err := variable.Evaluate(symTable)
 		assert.NoError(t, err)
 		assert.Equal(t, 10, val)
 	})
 
 	t.Run("not existing variable", func(t *testing.T) {
-		variable := VarExpression{Name: "c"}
+		variable := NewVarExpression("c")
 		_, err := variable.Evaluate(symTable)
 		assert.Error(t, err)
 	})
@@ -83,7 +83,7 @@ func TestIntExpr_Evaluate(t *testing.T) {
 	}
 
 	t.Run("integer", func(t *testing.T) {
-		intValue := IntExpression{Value: 1}
+		intValue := NewIntExpression(1)
 		val, err := intValue.Evaluate(symTable)
 		assert.NoError(t, err)
 		assert.Equal(t, 1, val)
@@ -104,79 +104,79 @@ func TestBinaryOperator_Evaluate(t *testing.T) {
 	}
 
 	t.Run("add constants", func(t *testing.T) {
-		binOp := BinaryOperator{
-			Left:     &IntExpression{1},
-			Operator: "+",
-			Right:    &IntExpression{2},
-		}
+		binOp := NewBinaryOperator(
+			NewIntExpression(1),
+			"+",
+			NewIntExpression(2),
+		)
 		val, err := binOp.Evaluate(symTable)
 		assert.NoError(t, err)
 		assert.Equal(t, 3, val)
 	})
 
 	t.Run("add variable and constant", func(t *testing.T) {
-		binOp := BinaryOperator{
-			Left:     &VarExpression{Name: "a"},
-			Operator: "+",
-			Right:    &IntExpression{2},
-		}
+		binOp := NewBinaryOperator(
+			NewVarExpression("a"),
+			"+",
+			NewIntExpression(2),
+		)
 		val, err := binOp.Evaluate(symTable)
 		assert.NoError(t, err)
 		assert.Equal(t, 12, val)
 	})
 
 	t.Run("use not existing variable", func(t *testing.T) {
-		binOp := BinaryOperator{
-			Left:     &VarExpression{Name: "c"},
-			Operator: "+",
-			Right:    &IntExpression{2},
-		}
+		binOp := NewBinaryOperator(
+			NewVarExpression("c"),
+			"+",
+			NewIntExpression(2),
+		)
 		_, err := binOp.Evaluate(symTable)
 		assert.Error(t, err)
 	})
 
 	t.Run("compare true", func(t *testing.T) {
-		binOp := BinaryOperator{
-			Left:     &IntExpression{1},
-			Operator: ">",
-			Right:    &IntExpression{0},
-		}
+		binOp := NewBinaryOperator(
+			NewIntExpression(1),
+			">",
+			NewIntExpression(0),
+		)
 		val, err := binOp.Evaluate(symTable)
 		assert.NoError(t, err)
 		assert.Equal(t, 1, val)
 	})
 
 	t.Run("compare false", func(t *testing.T) {
-		binOp := BinaryOperator{
-			Left:     &IntExpression{1},
-			Operator: "==",
-			Right:    &IntExpression{2},
-		}
+		binOp := NewBinaryOperator(
+			NewIntExpression(1),
+			"==",
+			NewIntExpression(2),
+		)
 		val, err := binOp.Evaluate(symTable)
 		assert.NoError(t, err)
 		assert.Equal(t, 0, val)
 	})
 
 	t.Run("not supported operator", func(t *testing.T) {
-		binOp := BinaryOperator{
-			Left:     &IntExpression{1},
-			Operator: "**",
-			Right:    &IntExpression{2},
-		}
+		binOp := NewBinaryOperator(
+			NewIntExpression(1),
+			"**",
+			NewIntExpression(2),
+		)
 		_, err := binOp.Evaluate(symTable)
 		assert.Error(t, err)
 	})
 
 	t.Run("complex expression", func(t *testing.T) {
-		binOp := BinaryOperator{
-			Left:     &IntExpression{1},
-			Operator: "+",
-			Right: &BinaryOperator{
-				Left:     &IntExpression{2},
-				Operator: "*",
-				Right:    &VarExpression{Name: "b"},
-			},
-		}
+		binOp := NewBinaryOperator(
+			NewIntExpression(1),
+			"+",
+			NewBinaryOperator(
+				NewIntExpression(2),
+				"*",
+				NewVarExpression("b"),
+			),
+		)
 		val, err := binOp.Evaluate(symTable)
 		assert.NoError(t, err)
 		assert.Equal(t, 41, val)

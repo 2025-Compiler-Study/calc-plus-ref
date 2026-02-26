@@ -15,6 +15,9 @@ type VarExpression struct {
 	Name string
 }
 
+func NewVarExpression(name string) *VarExpression {
+	return &VarExpression{Name: name}
+}
 func (v *VarExpression) Evaluate(t symbols.Table[int]) (int, error) {
 	return t.GetSymbol(v.Name)
 }
@@ -27,6 +30,9 @@ type IntExpression struct {
 	Value int
 }
 
+func NewIntExpression(value int) *IntExpression {
+	return &IntExpression{Value: value}
+}
 func (i *IntExpression) Evaluate(_ symbols.Table[int]) (int, error) { return i.Value, nil }
 func (i *IntExpression) String() string                             { return i.StringDepth(0) }
 func (i *IntExpression) StringDepth(d int) string {
@@ -39,6 +45,9 @@ type BinaryOperator struct {
 	Right    Expression
 }
 
+func NewBinaryOperator(left Expression, operator string, right Expression) *BinaryOperator {
+	return &BinaryOperator{Left: left, Operator: operator, Right: right}
+}
 func (b *BinaryOperator) Evaluate(t symbols.Table[int]) (int, error) {
 	left, lErr := b.Left.Evaluate(t)
 	if lErr != nil {

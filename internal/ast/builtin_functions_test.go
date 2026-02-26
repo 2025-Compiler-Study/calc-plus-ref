@@ -13,15 +13,12 @@ import (
 
 func TestBuiltinFunctions_String(t *testing.T) {
 	t.Run("read", func(t *testing.T) {
-		readCall := BuiltinReadCall{Reader: os.Stdin}
+		readCall := NewBuiltinReadCall(os.Stdin)
 		fmt.Println(readCall.String())
 	})
 
 	t.Run("write", func(t *testing.T) {
-		writeCall := BuiltinWriteCall{
-			Writer:   os.Stdout,
-			Argument: &IntExpression{Value: 42},
-		}
+		writeCall := NewBuiltinWriteCall(os.Stdout, NewIntExpression(42))
 		fmt.Println(writeCall.String())
 	})
 }
@@ -54,7 +51,7 @@ func TestBuiltinReadCall_Evaluate(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			stdin := bytes.NewBuffer([]byte(tc.input))
 
-			readCall := BuiltinReadCall{Reader: stdin}
+			readCall := NewBuiltinReadCall(stdin)
 			result, err := readCall.Evaluate(symTable)
 			if tc.isErr {
 				require.Error(t, err)
@@ -85,31 +82,31 @@ func TestBuiltinWriteCall_Execute(t *testing.T) {
 	}
 	testCases := map[string]testCase{
 		"IntExpression": {
-			input: &IntExpression{Value: 100},
+			input: NewIntExpression(100),
 			want:  "100",
 		},
 		"VarExpression": {
-			input: &VarExpression{Name: "a"},
+			input: NewVarExpression("a"),
 			want:  "10",
 		},
 		"BinaryOperator": {
-			input: &BinaryOperator{
-				Left:     &VarExpression{Name: "a"},
-				Operator: "+",
-				Right:    &VarExpression{Name: "b"},
-			},
+			input: NewBinaryOperator(
+				NewVarExpression("a"),
+				"+",
+				NewVarExpression("b"),
+			),
 			want: "30",
 		},
 		"ComplexExpression": {
-			input: &BinaryOperator{
-				Left:     &IntExpression{1},
-				Operator: "+",
-				Right: &BinaryOperator{
-					Left:     &IntExpression{2},
-					Operator: "*",
-					Right:    &VarExpression{Name: "b"},
-				},
-			},
+			input: NewBinaryOperator(
+				NewIntExpression(1),
+				"+",
+				NewBinaryOperator(
+					NewIntExpression(2),
+					"*",
+					NewVarExpression("b"),
+				),
+			),
 			want: "41",
 		},
 	}
@@ -117,10 +114,7 @@ func TestBuiltinWriteCall_Execute(t *testing.T) {
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
 			stdout := bytes.NewBuffer([]byte{})
-			writeCall := BuiltinWriteCall{
-				Writer:   stdout,
-				Argument: tc.input,
-			}
+			writeCall := NewBuiltinWriteCall(stdout, tc.input)
 			_, err := writeCall.Evaluate(symTable)
 			actual := strings.TrimSuffix(stdout.String(), "\n")
 			assert.NoError(t, err)
