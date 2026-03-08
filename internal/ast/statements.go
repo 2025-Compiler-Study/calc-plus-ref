@@ -1,13 +1,12 @@
 package ast
 
 import (
-	"calcPlus/internal/symbols"
 	"fmt"
 	"strings"
 )
 
 type Statement interface {
-	Execute(*symbols.ScopedTable[int]) error
+	statement()
 	Node
 }
 
@@ -18,12 +17,10 @@ type Declaration struct {
 func NewDeclaration(name string) *Declaration {
 	return &Declaration{Name: name}
 }
+func (d *Declaration) statement()     {}
 func (d *Declaration) String() string { return d.StringDepth(0) }
 func (d *Declaration) StringDepth(depth int) string {
 	return fmt.Sprintf("%sDecl: %s\n", indent(depth), d.Name)
-}
-func (d *Declaration) Execute(env *symbols.ScopedTable[int]) error {
-	return env.Register(d.Name)
 }
 
 type Assignment struct {
@@ -34,6 +31,7 @@ type Assignment struct {
 func NewAssignment(name string, value Expression) *Assignment {
 	return &Assignment{Name: name, Value: value}
 }
+func (a *Assignment) statement()     {}
 func (a *Assignment) String() string { return a.StringDepth(0) }
 func (a *Assignment) StringDepth(d int) string {
 	expr := a.Value.StringDepth(d + 1)
@@ -43,13 +41,6 @@ func (a *Assignment) StringDepth(d int) string {
 
 	return sb.String()
 }
-func (a *Assignment) Execute(env *symbols.ScopedTable[int]) error {
-	value, err := a.Value.Evaluate(env)
-	if err != nil {
-		return err
-	}
-	return env.SetSymbol(a.Name, value)
-}
 
 type BlockStatements []Statement
 
@@ -58,6 +49,7 @@ func NewBlockStatements(statements ...Statement) *BlockStatements {
 	value = append(value, statements...)
 	return &value
 }
+func (b *BlockStatements) statement()     {}
 func (b *BlockStatements) String() string { return b.StringDepth(0) }
 func (b *BlockStatements) StringDepth(d int) string {
 	sb := strings.Builder{}
@@ -66,17 +58,6 @@ func (b *BlockStatements) StringDepth(d int) string {
 	}
 
 	return sb.String()
-}
-func (b *BlockStatements) Execute(env *symbols.ScopedTable[int]) error {
-	env.PushScope()
-	for _, stmt := range *b {
-		err := stmt.Execute(env)
-		if err != nil {
-			return err
-		}
-	}
-	env.PopScope()
-	return nil
 }
 
 type IfElse struct {
@@ -88,6 +69,7 @@ type IfElse struct {
 func NewIfElse(condition Expression, thenBlock, elseBlock *BlockStatements) *IfElse {
 	return &IfElse{Condition: condition, ThenBlock: thenBlock, ElseBlock: elseBlock}
 }
+func (i *IfElse) statement()     {}
 func (i *IfElse) String() string { return i.StringDepth(0) }
 func (i *IfElse) StringDepth(d int) string {
 	sb := strings.Builder{}
@@ -98,15 +80,4 @@ func (i *IfElse) StringDepth(d int) string {
 	}
 
 	return sb.String()
-}
-func (i *IfElse) Execute(env *symbols.ScopedTable[int]) error {
-	condition, err := i.Condition.Evaluate(env)
-	if err != nil {
-		return err
-	}
-	if condition == 1 {
-		return i.ThenBlock.Execute(env)
-	} else {
-		return i.ElseBlock.Execute(env)
-	}
 }

@@ -1,13 +1,12 @@
 package ast
 
 import (
-	"calcPlus/internal/symbols"
 	"fmt"
 	"strings"
 )
 
 type Expression interface {
-	Evaluate(symbols.Table[int]) (int, error)
+	expression()
 	Node
 }
 
@@ -18,9 +17,7 @@ type VarExpression struct {
 func NewVarExpression(name string) *VarExpression {
 	return &VarExpression{Name: name}
 }
-func (v *VarExpression) Evaluate(t symbols.Table[int]) (int, error) {
-	return t.GetSymbol(v.Name)
-}
+func (v *VarExpression) expression()    {}
 func (v *VarExpression) String() string { return v.StringDepth(0) }
 func (v *VarExpression) StringDepth(d int) string {
 	return fmt.Sprintf("%sExprVar: %s", indent(d), v.Name)
@@ -33,8 +30,8 @@ type IntExpression struct {
 func NewIntExpression(value int) *IntExpression {
 	return &IntExpression{Value: value}
 }
-func (i *IntExpression) Evaluate(_ symbols.Table[int]) (int, error) { return i.Value, nil }
-func (i *IntExpression) String() string                             { return i.StringDepth(0) }
+func (i *IntExpression) expression()    {}
+func (i *IntExpression) String() string { return i.StringDepth(0) }
 func (i *IntExpression) StringDepth(d int) string {
 	return fmt.Sprintf("%sExprInt: %d", indent(d), i.Value)
 }
@@ -48,49 +45,7 @@ type BinaryOperator struct {
 func NewBinaryOperator(left Expression, operator string, right Expression) *BinaryOperator {
 	return &BinaryOperator{Left: left, Operator: operator, Right: right}
 }
-func (b *BinaryOperator) Evaluate(t symbols.Table[int]) (int, error) {
-	left, lErr := b.Left.Evaluate(t)
-	if lErr != nil {
-		return 0, lErr
-	}
-	right, rErr := b.Right.Evaluate(t)
-	if rErr != nil {
-		return 0, rErr
-	}
-	logicalResult := false
-	switch b.Operator {
-	// Arithmetic operators
-	case "+":
-		return left + right, nil
-	case "-":
-		return left - right, nil
-	case "*":
-		return left * right, nil
-	case "/":
-		return left / right, nil
-	// Logical operators
-	case "==":
-		logicalResult = left == right
-	case "!=":
-		logicalResult = left != right
-	case ">":
-		logicalResult = left > right
-	case ">=":
-		logicalResult = left >= right
-	case "<":
-		logicalResult = left < right
-	case "<=":
-		logicalResult = left <= right
-	default:
-		return 0, fmt.Errorf("unknown operator: %s", b.Operator)
-	}
-
-	// Fallback logical operators result
-	if logicalResult {
-		return 1, nil
-	}
-	return 0, nil
-}
+func (b *BinaryOperator) expression()    {}
 func (b *BinaryOperator) String() string { return b.StringDepth(0) }
 func (b *BinaryOperator) StringDepth(d int) string {
 	leftValue := b.Left.StringDepth(d + 1)
