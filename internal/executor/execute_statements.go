@@ -2,58 +2,57 @@ package executor
 
 import (
 	"calcPlus/internal/ast"
-	"calcPlus/internal/symbols"
 	"fmt"
 )
 
-func Execute(s ast.Statement, symTable *symbols.ScopedTable[int]) error {
-	switch s := s.(type) {
+func (e *Engine) Execute(stmt ast.Statement) error {
+	switch stmt := stmt.(type) {
 	case *ast.Declaration:
-		return executeDeclaration(s, symTable)
+		return e.executeDeclaration(stmt)
 	case *ast.Assignment:
-		return executeAssignment(s, symTable)
+		return e.executeAssignment(stmt)
 	case *ast.BlockStatements:
-		return executeBlockStatements(s, symTable)
+		return e.executeBlockStatements(stmt)
 	case *ast.IfElse:
-		return executeIfElse(s, symTable)
+		return e.executeIfElse(stmt)
 	default:
-		return fmt.Errorf("unsupported statement type: %T", s)
+		return fmt.Errorf("unsupported statement type: %T", stmt)
 	}
 }
 
-func executeDeclaration(d *ast.Declaration, symTable *symbols.ScopedTable[int]) error {
-	return symTable.Register(d.Name)
+func (e *Engine) executeDeclaration(d *ast.Declaration) error {
+	return e.Variables.Register(d.Name)
 }
 
-func executeAssignment(a *ast.Assignment, symTable *symbols.ScopedTable[int]) error {
-	value, err := Evaluate(a.Value, symTable)
+func (e *Engine) executeAssignment(a *ast.Assignment) error {
+	value, err := e.Evaluate(a.Value)
 	if err != nil {
 		return err
 	}
-	return symTable.SetSymbol(a.Name, value)
+	return e.Variables.SetSymbol(a.Name, value)
 }
 
-func executeBlockStatements(b *ast.BlockStatements, symTable *symbols.ScopedTable[int]) error {
+func (e *Engine) executeBlockStatements(b *ast.BlockStatements) error {
 	if b == nil || len(*b) == 0 {
 		return nil
 	}
-	symTable.PushScope()
+	e.Variables.PushScope()
 	for _, statement := range *b {
-		if err := Execute(statement, symTable); err != nil {
+		if err := e.Execute(statement); err != nil {
 			return err
 		}
 	}
-	symTable.PopScope()
+	e.Variables.PopScope()
 	return nil
 }
 
-func executeIfElse(i *ast.IfElse, symTable *symbols.ScopedTable[int]) error {
-	condition, err := Evaluate(i.Condition, symTable)
+func (e *Engine) executeIfElse(i *ast.IfElse) error {
+	condition, err := e.Evaluate(i.Condition)
 	if err != nil {
 		return err
 	}
 	if condition == 1 {
-		return executeBlockStatements(i.ThenBlock, symTable)
+		return e.executeBlockStatements(i.ThenBlock)
 	}
-	return executeBlockStatements(i.ElseBlock, symTable)
+	return e.executeBlockStatements(i.ElseBlock)
 }

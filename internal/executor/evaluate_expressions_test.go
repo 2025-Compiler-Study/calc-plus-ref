@@ -2,68 +2,49 @@ package executor
 
 import (
 	"calcPlus/internal/ast"
-	"calcPlus/internal/symbols"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestEvaluateIntExpression(t *testing.T) {
+	engine := NewEngine(nil, nil)
 	t.Run("value", func(t *testing.T) {
 		intValue := ast.NewIntExpression(1)
-		val, err := evaluateIntExpression(intValue)
+		val, err := engine.Evaluate(intValue)
 		assert.NoError(t, err)
 		assert.Equal(t, 1, val)
 	})
 }
 
 func TestEvaluateVarExpression(t *testing.T) {
-	symTable := symbols.NewSimpleTable[int]()
-	presets := map[string]int{
-		"a": 10,
-		"b": 20,
-	}
-	for k, v := range presets {
-		err := symTable.Register(k)
-		require.NoError(t, err)
-		err = symTable.SetSymbol(k, v)
-		require.NoError(t, err)
-	}
+	engine := NewEngine(nil, nil)
+	ConfigurePreset(engine)
 
 	t.Run("exist variable", func(t *testing.T) {
 		variable := ast.NewVarExpression("a")
-		val, err := evaluateVarExpression(variable, symTable)
+		val, err := engine.Evaluate(variable)
 		assert.NoError(t, err)
 		assert.Equal(t, 10, val)
 	})
 
 	t.Run("not existing variable", func(t *testing.T) {
 		variable := ast.NewVarExpression("c")
-		_, err := evaluateVarExpression(variable, symTable)
+		_, err := engine.Evaluate(variable)
 		assert.Error(t, err)
 	})
 }
 
 func TestEvaluateBinaryOperator(t *testing.T) {
-	symTable := symbols.NewSimpleTable[int]()
-	presets := map[string]int{
-		"a": 10,
-		"b": 20,
-	}
-	for k, v := range presets {
-		err := symTable.Register(k)
-		require.NoError(t, err)
-		err = symTable.SetSymbol(k, v)
-		require.NoError(t, err)
-	}
-
+	engine := NewEngine(nil, nil)
+	ConfigurePreset(engine)
 	t.Run("add constants", func(t *testing.T) {
 		binOp := ast.NewBinaryOperator(
 			ast.NewIntExpression(1),
 			"+",
 			ast.NewIntExpression(2),
 		)
-		val, err := evaluateBinaryOperator(binOp, symTable)
+		val, err := engine.Evaluate(binOp)
 		assert.NoError(t, err)
 		assert.Equal(t, 3, val)
 	})
@@ -74,7 +55,7 @@ func TestEvaluateBinaryOperator(t *testing.T) {
 			"+",
 			ast.NewIntExpression(2),
 		)
-		val, err := evaluateBinaryOperator(binOp, symTable)
+		val, err := engine.Evaluate(binOp)
 		assert.NoError(t, err)
 		assert.Equal(t, 12, val)
 	})
@@ -85,7 +66,7 @@ func TestEvaluateBinaryOperator(t *testing.T) {
 			"+",
 			ast.NewIntExpression(2),
 		)
-		_, err := evaluateBinaryOperator(binOp, symTable)
+		_, err := engine.Evaluate(binOp)
 		assert.Error(t, err)
 	})
 
@@ -95,7 +76,7 @@ func TestEvaluateBinaryOperator(t *testing.T) {
 			">",
 			ast.NewIntExpression(0),
 		)
-		val, err := evaluateBinaryOperator(binOp, symTable)
+		val, err := engine.Evaluate(binOp)
 		assert.NoError(t, err)
 		assert.Equal(t, 1, val)
 	})
@@ -106,7 +87,7 @@ func TestEvaluateBinaryOperator(t *testing.T) {
 			"==",
 			ast.NewIntExpression(2),
 		)
-		val, err := evaluateBinaryOperator(binOp, symTable)
+		val, err := engine.Evaluate(binOp)
 		assert.NoError(t, err)
 		assert.Equal(t, 0, val)
 	})
@@ -117,7 +98,7 @@ func TestEvaluateBinaryOperator(t *testing.T) {
 			"**",
 			ast.NewIntExpression(2),
 		)
-		_, err := evaluateBinaryOperator(binOp, symTable)
+		_, err := engine.Evaluate(binOp)
 		assert.Error(t, err)
 	})
 
@@ -131,7 +112,7 @@ func TestEvaluateBinaryOperator(t *testing.T) {
 				ast.NewVarExpression("b"),
 			),
 		)
-		val, err := evaluateBinaryOperator(binOp, symTable)
+		val, err := engine.Evaluate(binOp)
 		assert.NoError(t, err)
 		assert.Equal(t, 41, val)
 	})

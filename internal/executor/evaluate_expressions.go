@@ -2,37 +2,40 @@ package executor
 
 import (
 	"calcPlus/internal/ast"
-	"calcPlus/internal/symbols"
 	"fmt"
 )
 
-func Evaluate(e ast.Expression, symTable symbols.Table[int]) (int, error) {
-	switch e := e.(type) {
+func (e *Engine) Evaluate(expr ast.Expression) (int, error) {
+	switch expr := expr.(type) {
 	case *ast.IntExpression:
-		return evaluateIntExpression(e)
+		return e.evaluateIntExpression(expr)
 	case *ast.VarExpression:
-		return evaluateVarExpression(e, symTable)
+		return e.evaluateVarExpression(expr)
 	case *ast.BinaryOperator:
-		return evaluateBinaryOperator(e, symTable)
+		return e.evaluateBinaryOperator(expr)
+	case *ast.BuiltinReadCall:
+		return e.evaluateBuiltinRead(expr)
+	case *ast.BuiltinWriteCall:
+		return e.evaluateBuiltinWrite(expr)
 	default:
 		return 0, fmt.Errorf("unknown expression type: %T", e)
 	}
 }
 
-func evaluateIntExpression(i *ast.IntExpression) (int, error) {
+func (e *Engine) evaluateIntExpression(i *ast.IntExpression) (int, error) {
 	return i.Value, nil
 }
 
-func evaluateVarExpression(v *ast.VarExpression, symTable symbols.Table[int]) (int, error) {
-	return symTable.GetSymbol(v.Name)
+func (e *Engine) evaluateVarExpression(v *ast.VarExpression) (int, error) {
+	return e.Variables.GetSymbol(v.Name)
 }
 
-func evaluateBinaryOperator(b *ast.BinaryOperator, symTable symbols.Table[int]) (int, error) {
-	left, lErr := Evaluate(b.Left, symTable)
+func (e *Engine) evaluateBinaryOperator(b *ast.BinaryOperator) (int, error) {
+	left, lErr := e.Evaluate(b.Left)
 	if lErr != nil {
 		return 0, lErr
 	}
-	right, rErr := Evaluate(b.Right, symTable)
+	right, rErr := e.Evaluate(b.Right)
 	if rErr != nil {
 		return 0, rErr
 	}

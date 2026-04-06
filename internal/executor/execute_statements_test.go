@@ -2,48 +2,48 @@ package executor
 
 import (
 	"calcPlus/internal/ast"
-	"calcPlus/internal/symbols"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestExecuteDeclaration(t *testing.T) {
-	symTable := symbols.NewScopedTable[int]()
+	engine := NewEngine(nil, nil)
 	presets := map[string]int{
 		"a": 10,
 		"b": 20,
 	}
 	for k, v := range presets {
-		err := symTable.Register(k)
+		err := engine.Variables.Register(k)
 		require.NoError(t, err)
-		err = symTable.SetSymbol(k, v)
+		err = engine.Variables.SetSymbol(k, v)
 		require.NoError(t, err)
 	}
 
 	t.Run("declaring undeclared name", func(t *testing.T) {
 		declaration := ast.NewDeclaration("new")
-		err := Execute(declaration, symTable)
+		err := engine.Execute(declaration)
 		assert.NoError(t, err)
 	})
 
 	t.Run("declaring already declared", func(t *testing.T) {
 		declaration := ast.NewDeclaration("a")
-		err := Execute(declaration, symTable)
+		err := engine.Execute(declaration)
 		assert.Error(t, err)
 	})
 }
 
 func TestExecuteAssignment(t *testing.T) {
-	symTable := symbols.NewScopedTable[int]()
+	engine := NewEngine(nil, nil)
 	presets := map[string]int{
 		"a": 10,
 		"b": 20,
 	}
 	for k, v := range presets {
-		err := symTable.Register(k)
+		err := engine.Variables.Register(k)
 		require.NoError(t, err)
-		err = symTable.SetSymbol(k, v)
+		err = engine.Variables.SetSymbol(k, v)
 		require.NoError(t, err)
 	}
 
@@ -52,7 +52,7 @@ func TestExecuteAssignment(t *testing.T) {
 			"a",
 			ast.NewIntExpression(1),
 		)
-		err := Execute(assignment, symTable)
+		err := engine.Execute(assignment)
 		assert.NoError(t, err)
 	})
 
@@ -61,7 +61,7 @@ func TestExecuteAssignment(t *testing.T) {
 			"undeclared",
 			ast.NewIntExpression(1),
 		)
-		err := Execute(assignment, symTable)
+		err := engine.Execute(assignment)
 		assert.Error(t, err)
 	})
 
@@ -74,21 +74,21 @@ func TestExecuteAssignment(t *testing.T) {
 				ast.NewIntExpression(1),
 			),
 		)
-		err := Execute(assignment, symTable)
+		err := engine.Execute(assignment)
 		assert.Error(t, err)
 	})
 }
 
 func TestExecuteBlockStatement(t *testing.T) {
-	symTable := symbols.NewScopedTable[int]()
+	engine := NewEngine(nil, nil)
 	presets := map[string]int{
 		"a": 10,
 		"b": 20,
 	}
 	for k, v := range presets {
-		err := symTable.Register(k)
+		err := engine.Variables.Register(k)
 		require.NoError(t, err)
-		err = symTable.SetSymbol(k, v)
+		err = engine.Variables.SetSymbol(k, v)
 		require.NoError(t, err)
 	}
 
@@ -97,13 +97,13 @@ func TestExecuteBlockStatement(t *testing.T) {
 			ast.NewDeclaration("value"),
 			ast.NewAssignment("value", ast.NewIntExpression(1)),
 		)
-		err := Execute(block, symTable)
+		err := engine.Execute(block)
 		assert.NoError(t, err)
 	})
 
 	t.Run("empty block", func(t *testing.T) {
 		block := ast.NewBlockStatements()
-		err := Execute(block, symTable)
+		err := engine.Execute(block)
 		assert.NoError(t, err)
 	})
 
@@ -115,7 +115,7 @@ func TestExecuteBlockStatement(t *testing.T) {
 			),
 			ast.NewAssignment("inner", ast.NewIntExpression(1)),
 		)
-		err := Execute(block, symTable)
+		err := engine.Execute(block)
 		assert.Error(t, err)
 	})
 
@@ -128,23 +128,14 @@ func TestExecuteBlockStatement(t *testing.T) {
 			),
 			ast.NewAssignment("value", ast.NewIntExpression(1)),
 		)
-		err := Execute(block, symTable)
+		err := engine.Execute(block)
 		assert.NoError(t, err)
 	})
 }
 
 func TestExecuteIfElse(t *testing.T) {
-	symTable := symbols.NewScopedTable[int]()
-	presets := map[string]int{
-		"a": 10,
-		"b": 20,
-		"c": 30,
-	}
-	for k, v := range presets {
-		err := symTable.Register(k)
-		require.NoError(t, err)
-		err = symTable.SetSymbol(k, v)
-	}
+	engine := NewEngine(nil, nil)
+	ConfigurePreset(engine)
 
 	t.Run("condition true", func(t *testing.T) {
 		ifElse := ast.NewIfElse(
@@ -158,9 +149,9 @@ func TestExecuteIfElse(t *testing.T) {
 			),
 			nil,
 		)
-		err := Execute(ifElse, symTable)
+		err := engine.Execute(ifElse)
 		assert.NoError(t, err)
-		val, err := symTable.GetSymbol("a")
+		val, err := engine.Variables.GetSymbol("a")
 		assert.NoError(t, err)
 		assert.Equal(t, 30, val)
 	})
@@ -179,9 +170,9 @@ func TestExecuteIfElse(t *testing.T) {
 				ast.NewAssignment("b", ast.NewIntExpression(40)),
 			),
 		)
-		err := Execute(ifElse, symTable)
+		err := engine.Execute(ifElse)
 		assert.NoError(t, err)
-		val, err := symTable.GetSymbol("b")
+		val, err := engine.Variables.GetSymbol("b")
 		assert.NoError(t, err)
 		assert.Equal(t, 40, val)
 	})
@@ -198,10 +189,9 @@ func TestExecuteIfElse(t *testing.T) {
 			),
 			nil,
 		)
-		err := Execute(ifElse, symTable)
+		err := engine.Execute(ifElse)
 		assert.NoError(t, err)
-		val, err := symTable.GetSymbol("c")
-		assert.NoError(t, err)
-		assert.NotEqual(t, 100, val)
+		_, err = engine.Variables.GetSymbol("c")
+		assert.Error(t, err)
 	})
 }
