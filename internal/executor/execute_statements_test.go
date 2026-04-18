@@ -58,6 +58,15 @@ func TestExecuteAssignment(t *testing.T) {
 		err := engine.Execute(assignment)
 		assert.Error(t, err)
 	})
+
+	t.Run("assign to sink variable", func(t *testing.T) {
+		assignment := ast.NewAssignment(
+			"_",
+			ast.NewIntExpression(1),
+		)
+		err := engine.Execute(assignment)
+		assert.NoError(t, err)
+	})
 }
 
 func TestExecuteBlockStatement(t *testing.T) {

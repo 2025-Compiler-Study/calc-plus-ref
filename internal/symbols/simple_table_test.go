@@ -1,9 +1,10 @@
 package symbols
 
 import (
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestSimpleSymbolTable_Register(t *testing.T) {
@@ -22,6 +23,14 @@ func TestSimpleSymbolTable_Register(t *testing.T) {
 
 		// Registering "exist" variable again should return an error
 		err = symTable.Register("exist")
+		assert.Error(t, err)
+	})
+
+	t.Run("Register invalid name", func(t *testing.T) {
+		err := symTable.Register("")
+		assert.Error(t, err)
+
+		err = symTable.Register("_")
 		assert.Error(t, err)
 	})
 }

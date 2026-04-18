@@ -11,6 +11,10 @@ func NewSimpleTable[T any]() *SimpleTable[T] {
 }
 
 func (s *SimpleTable[T]) Register(name string) error {
+	if name == "" || name == "_" {
+		return fmt.Errorf("invalid variable name")
+	}
+
 	if _, ok := s.table[name]; ok {
 		return fmt.Errorf("variable %s already registered", name)
 	}

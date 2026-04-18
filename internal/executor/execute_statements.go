@@ -29,6 +29,10 @@ func (e *Engine) executeAssignment(a *ast.Assignment) error {
 	if err != nil {
 		return err
 	}
+	if a.Name == "_" {
+		return nil
+	}
+
 	return e.Variables.SetSymbol(a.Name, value)
 }
 
