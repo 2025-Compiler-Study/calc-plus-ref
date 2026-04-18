@@ -5,21 +5,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestExecuteDeclaration(t *testing.T) {
 	engine := NewEngine(nil, nil)
-	presets := map[string]int{
-		"a": 10,
-		"b": 20,
-	}
-	for k, v := range presets {
-		err := engine.Variables.Register(k)
-		require.NoError(t, err)
-		err = engine.Variables.SetSymbol(k, v)
-		require.NoError(t, err)
-	}
+	ConfigurePreset(engine)
 
 	t.Run("declaring undeclared name", func(t *testing.T) {
 		declaration := ast.NewDeclaration("new")
@@ -36,16 +26,7 @@ func TestExecuteDeclaration(t *testing.T) {
 
 func TestExecuteAssignment(t *testing.T) {
 	engine := NewEngine(nil, nil)
-	presets := map[string]int{
-		"a": 10,
-		"b": 20,
-	}
-	for k, v := range presets {
-		err := engine.Variables.Register(k)
-		require.NoError(t, err)
-		err = engine.Variables.SetSymbol(k, v)
-		require.NoError(t, err)
-	}
+	ConfigurePreset(engine)
 
 	t.Run("normal case", func(t *testing.T) {
 		assignment := ast.NewAssignment(
@@ -81,16 +62,7 @@ func TestExecuteAssignment(t *testing.T) {
 
 func TestExecuteBlockStatement(t *testing.T) {
 	engine := NewEngine(nil, nil)
-	presets := map[string]int{
-		"a": 10,
-		"b": 20,
-	}
-	for k, v := range presets {
-		err := engine.Variables.Register(k)
-		require.NoError(t, err)
-		err = engine.Variables.SetSymbol(k, v)
-		require.NoError(t, err)
-	}
+	ConfigurePreset(engine)
 
 	t.Run("multiple statements", func(t *testing.T) {
 		block := ast.NewBlockStatements(
