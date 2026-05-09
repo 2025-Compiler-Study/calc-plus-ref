@@ -27,3 +27,14 @@ func RunCalc4Interpreter(code string, reader io.Reader, writer io.Writer) {
 	calculator := NewCalc4Interpreter(reader, writer)
 	calculator.Visit(tree)
 }
+
+func RunCalc5Interpreter(code string, reader io.Reader, writer io.Writer) {
+	is := antlr.NewInputStream(code)
+	lexer := parser.NewCalcPlusLexer(is)
+	stream := antlr.NewCommonTokenStream(lexer, 0)
+	p := parser.NewCalcPlusParser(stream)
+
+	tree := p.Program()
+	calculator := NewCalc5Interpreter(reader, writer)
+	calculator.Visit(tree)
+}
