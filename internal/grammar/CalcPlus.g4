@@ -1,5 +1,16 @@
 grammar CalcPlus;
-calc0   :   expr EOF ;
+
+program :   (stmt)+ EOF;
+
+stmt    :   'int' VAR (',' VAR)* ';'            # Declare
+        |   VAR '=' expr ';'                    # ExprAssign
+        |   VAR '=' 'read' '(' ')' ';'          # ReadAssign
+        |   'write' '(' expr ')' ';'            # Write
+        |   'if' '(' cond ')' thenBlock=block
+            ('else' elseBlock=block)?           # IfElse
+        |   block                               # StmtBlock
+        ;
+
 expr    :   expr ('*'|'/') expr # MulDiv
         |   expr ('+'|'-') expr # AddSub
         |   INT                 # Int
@@ -7,23 +18,8 @@ expr    :   expr ('*'|'/') expr # MulDiv
         |   '(' expr ')'        # Parens
         ;
 
-calc1   :   (stmt)+ EOF;
-stmt    :   VAR '=' expr ';'                    # ExprAssign
-        |   VAR '=' 'read' '(' ')' ';'          # ReadAssign
-        |   'if' '(' cond ')' thenBlock=block
-            ('else' elseBlock=block)?           # IfElse
-        |   'write' '(' expr ')' ';'            # Write
-        |   'int' VAR (',' VAR)* ';'            # Declare
-        |   block                               # StmtBlock
-        ;
-
-calc2   :   (stmt)+ EOF;
 cond    :   expr ('=='|'!='|'>'|'>='|'<'|'<=') expr ;
 block   :   '{' (stmt)* '}' ;
-
-calc3   :   (stmt)+ EOF;
-
-calc4   :   (stmt)+ EOF;
 
 WS  : [ \t\r\n]+ -> skip;
 INT : [0-9]+ ;

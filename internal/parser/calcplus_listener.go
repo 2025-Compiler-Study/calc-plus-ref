@@ -7,8 +7,26 @@ import "github.com/antlr4-go/antlr/v4"
 type CalcPlusListener interface {
 	antlr.ParseTreeListener
 
-	// EnterCalc0 is called when entering the calc0 production.
-	EnterCalc0(c *Calc0Context)
+	// EnterProgram is called when entering the program production.
+	EnterProgram(c *ProgramContext)
+
+	// EnterDeclare is called when entering the Declare production.
+	EnterDeclare(c *DeclareContext)
+
+	// EnterExprAssign is called when entering the ExprAssign production.
+	EnterExprAssign(c *ExprAssignContext)
+
+	// EnterReadAssign is called when entering the ReadAssign production.
+	EnterReadAssign(c *ReadAssignContext)
+
+	// EnterWrite is called when entering the Write production.
+	EnterWrite(c *WriteContext)
+
+	// EnterIfElse is called when entering the IfElse production.
+	EnterIfElse(c *IfElseContext)
+
+	// EnterStmtBlock is called when entering the StmtBlock production.
+	EnterStmtBlock(c *StmtBlockContext)
 
 	// EnterMulDiv is called when entering the MulDiv production.
 	EnterMulDiv(c *MulDivContext)
@@ -25,44 +43,32 @@ type CalcPlusListener interface {
 	// EnterInt is called when entering the Int production.
 	EnterInt(c *IntContext)
 
-	// EnterCalc1 is called when entering the calc1 production.
-	EnterCalc1(c *Calc1Context)
-
-	// EnterExprAssign is called when entering the ExprAssign production.
-	EnterExprAssign(c *ExprAssignContext)
-
-	// EnterReadAssign is called when entering the ReadAssign production.
-	EnterReadAssign(c *ReadAssignContext)
-
-	// EnterIfElse is called when entering the IfElse production.
-	EnterIfElse(c *IfElseContext)
-
-	// EnterWrite is called when entering the Write production.
-	EnterWrite(c *WriteContext)
-
-	// EnterDeclare is called when entering the Declare production.
-	EnterDeclare(c *DeclareContext)
-
-	// EnterStmtBlock is called when entering the StmtBlock production.
-	EnterStmtBlock(c *StmtBlockContext)
-
-	// EnterCalc2 is called when entering the calc2 production.
-	EnterCalc2(c *Calc2Context)
-
 	// EnterCond is called when entering the cond production.
 	EnterCond(c *CondContext)
 
 	// EnterBlock is called when entering the block production.
 	EnterBlock(c *BlockContext)
 
-	// EnterCalc3 is called when entering the calc3 production.
-	EnterCalc3(c *Calc3Context)
+	// ExitProgram is called when exiting the program production.
+	ExitProgram(c *ProgramContext)
 
-	// EnterCalc4 is called when entering the calc4 production.
-	EnterCalc4(c *Calc4Context)
+	// ExitDeclare is called when exiting the Declare production.
+	ExitDeclare(c *DeclareContext)
 
-	// ExitCalc0 is called when exiting the calc0 production.
-	ExitCalc0(c *Calc0Context)
+	// ExitExprAssign is called when exiting the ExprAssign production.
+	ExitExprAssign(c *ExprAssignContext)
+
+	// ExitReadAssign is called when exiting the ReadAssign production.
+	ExitReadAssign(c *ReadAssignContext)
+
+	// ExitWrite is called when exiting the Write production.
+	ExitWrite(c *WriteContext)
+
+	// ExitIfElse is called when exiting the IfElse production.
+	ExitIfElse(c *IfElseContext)
+
+	// ExitStmtBlock is called when exiting the StmtBlock production.
+	ExitStmtBlock(c *StmtBlockContext)
 
 	// ExitMulDiv is called when exiting the MulDiv production.
 	ExitMulDiv(c *MulDivContext)
@@ -79,39 +85,9 @@ type CalcPlusListener interface {
 	// ExitInt is called when exiting the Int production.
 	ExitInt(c *IntContext)
 
-	// ExitCalc1 is called when exiting the calc1 production.
-	ExitCalc1(c *Calc1Context)
-
-	// ExitExprAssign is called when exiting the ExprAssign production.
-	ExitExprAssign(c *ExprAssignContext)
-
-	// ExitReadAssign is called when exiting the ReadAssign production.
-	ExitReadAssign(c *ReadAssignContext)
-
-	// ExitIfElse is called when exiting the IfElse production.
-	ExitIfElse(c *IfElseContext)
-
-	// ExitWrite is called when exiting the Write production.
-	ExitWrite(c *WriteContext)
-
-	// ExitDeclare is called when exiting the Declare production.
-	ExitDeclare(c *DeclareContext)
-
-	// ExitStmtBlock is called when exiting the StmtBlock production.
-	ExitStmtBlock(c *StmtBlockContext)
-
-	// ExitCalc2 is called when exiting the calc2 production.
-	ExitCalc2(c *Calc2Context)
-
 	// ExitCond is called when exiting the cond production.
 	ExitCond(c *CondContext)
 
 	// ExitBlock is called when exiting the block production.
 	ExitBlock(c *BlockContext)
-
-	// ExitCalc3 is called when exiting the calc3 production.
-	ExitCalc3(c *Calc3Context)
-
-	// ExitCalc4 is called when exiting the calc4 production.
-	ExitCalc4(c *Calc4Context)
 }

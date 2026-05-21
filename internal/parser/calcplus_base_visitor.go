@@ -7,7 +7,31 @@ type BaseCalcPlusVisitor struct {
 	*antlr.BaseParseTreeVisitor
 }
 
-func (v *BaseCalcPlusVisitor) VisitCalc0(ctx *Calc0Context) interface{} {
+func (v *BaseCalcPlusVisitor) VisitProgram(ctx *ProgramContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitDeclare(ctx *DeclareContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitExprAssign(ctx *ExprAssignContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitReadAssign(ctx *ReadAssignContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitWrite(ctx *WriteContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitIfElse(ctx *IfElseContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitStmtBlock(ctx *StmtBlockContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -31,50 +55,10 @@ func (v *BaseCalcPlusVisitor) VisitInt(ctx *IntContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseCalcPlusVisitor) VisitCalc1(ctx *Calc1Context) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseCalcPlusVisitor) VisitExprAssign(ctx *ExprAssignContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseCalcPlusVisitor) VisitReadAssign(ctx *ReadAssignContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseCalcPlusVisitor) VisitIfElse(ctx *IfElseContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseCalcPlusVisitor) VisitWrite(ctx *WriteContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseCalcPlusVisitor) VisitDeclare(ctx *DeclareContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseCalcPlusVisitor) VisitStmtBlock(ctx *StmtBlockContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseCalcPlusVisitor) VisitCalc2(ctx *Calc2Context) interface{} {
-	return v.VisitChildren(ctx)
-}
-
 func (v *BaseCalcPlusVisitor) VisitCond(ctx *CondContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
 func (v *BaseCalcPlusVisitor) VisitBlock(ctx *BlockContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseCalcPlusVisitor) VisitCalc3(ctx *Calc3Context) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseCalcPlusVisitor) VisitCalc4(ctx *Calc4Context) interface{} {
 	return v.VisitChildren(ctx)
 }
