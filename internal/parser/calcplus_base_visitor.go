@@ -11,6 +11,10 @@ func (v *BaseCalcPlusVisitor) VisitProgram(ctx *ProgramContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseCalcPlusVisitor) VisitFuncDef(ctx *FuncDefContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseCalcPlusVisitor) VisitDeclare(ctx *DeclareContext) interface{} {
 	return v.VisitChildren(ctx)
 }
@@ -19,11 +23,7 @@ func (v *BaseCalcPlusVisitor) VisitExprAssign(ctx *ExprAssignContext) interface{
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseCalcPlusVisitor) VisitReadAssign(ctx *ReadAssignContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseCalcPlusVisitor) VisitWrite(ctx *WriteContext) interface{} {
+func (v *BaseCalcPlusVisitor) VisitExprStmt(ctx *ExprStmtContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -32,6 +32,14 @@ func (v *BaseCalcPlusVisitor) VisitIfElse(ctx *IfElseContext) interface{} {
 }
 
 func (v *BaseCalcPlusVisitor) VisitStmtBlock(ctx *StmtBlockContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitReturn(ctx *ReturnContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitFuncCall(ctx *FuncCallContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -52,6 +60,14 @@ func (v *BaseCalcPlusVisitor) VisitParens(ctx *ParensContext) interface{} {
 }
 
 func (v *BaseCalcPlusVisitor) VisitInt(ctx *IntContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitParamList(ctx *ParamListContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseCalcPlusVisitor) VisitArgList(ctx *ArgListContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

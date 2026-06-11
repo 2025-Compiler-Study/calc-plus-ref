@@ -10,23 +10,29 @@ type CalcPlusListener interface {
 	// EnterProgram is called when entering the program production.
 	EnterProgram(c *ProgramContext)
 
+	// EnterFuncDef is called when entering the funcDef production.
+	EnterFuncDef(c *FuncDefContext)
+
 	// EnterDeclare is called when entering the Declare production.
 	EnterDeclare(c *DeclareContext)
 
 	// EnterExprAssign is called when entering the ExprAssign production.
 	EnterExprAssign(c *ExprAssignContext)
 
-	// EnterReadAssign is called when entering the ReadAssign production.
-	EnterReadAssign(c *ReadAssignContext)
-
-	// EnterWrite is called when entering the Write production.
-	EnterWrite(c *WriteContext)
+	// EnterExprStmt is called when entering the ExprStmt production.
+	EnterExprStmt(c *ExprStmtContext)
 
 	// EnterIfElse is called when entering the IfElse production.
 	EnterIfElse(c *IfElseContext)
 
 	// EnterStmtBlock is called when entering the StmtBlock production.
 	EnterStmtBlock(c *StmtBlockContext)
+
+	// EnterReturn is called when entering the Return production.
+	EnterReturn(c *ReturnContext)
+
+	// EnterFuncCall is called when entering the FuncCall production.
+	EnterFuncCall(c *FuncCallContext)
 
 	// EnterMulDiv is called when entering the MulDiv production.
 	EnterMulDiv(c *MulDivContext)
@@ -43,6 +49,12 @@ type CalcPlusListener interface {
 	// EnterInt is called when entering the Int production.
 	EnterInt(c *IntContext)
 
+	// EnterParamList is called when entering the paramList production.
+	EnterParamList(c *ParamListContext)
+
+	// EnterArgList is called when entering the argList production.
+	EnterArgList(c *ArgListContext)
+
 	// EnterCond is called when entering the cond production.
 	EnterCond(c *CondContext)
 
@@ -52,23 +64,29 @@ type CalcPlusListener interface {
 	// ExitProgram is called when exiting the program production.
 	ExitProgram(c *ProgramContext)
 
+	// ExitFuncDef is called when exiting the funcDef production.
+	ExitFuncDef(c *FuncDefContext)
+
 	// ExitDeclare is called when exiting the Declare production.
 	ExitDeclare(c *DeclareContext)
 
 	// ExitExprAssign is called when exiting the ExprAssign production.
 	ExitExprAssign(c *ExprAssignContext)
 
-	// ExitReadAssign is called when exiting the ReadAssign production.
-	ExitReadAssign(c *ReadAssignContext)
-
-	// ExitWrite is called when exiting the Write production.
-	ExitWrite(c *WriteContext)
+	// ExitExprStmt is called when exiting the ExprStmt production.
+	ExitExprStmt(c *ExprStmtContext)
 
 	// ExitIfElse is called when exiting the IfElse production.
 	ExitIfElse(c *IfElseContext)
 
 	// ExitStmtBlock is called when exiting the StmtBlock production.
 	ExitStmtBlock(c *StmtBlockContext)
+
+	// ExitReturn is called when exiting the Return production.
+	ExitReturn(c *ReturnContext)
+
+	// ExitFuncCall is called when exiting the FuncCall production.
+	ExitFuncCall(c *FuncCallContext)
 
 	// ExitMulDiv is called when exiting the MulDiv production.
 	ExitMulDiv(c *MulDivContext)
@@ -84,6 +102,12 @@ type CalcPlusListener interface {
 
 	// ExitInt is called when exiting the Int production.
 	ExitInt(c *IntContext)
+
+	// ExitParamList is called when exiting the paramList production.
+	ExitParamList(c *ParamListContext)
+
+	// ExitArgList is called when exiting the argList production.
+	ExitArgList(c *ArgListContext)
 
 	// ExitCond is called when exiting the cond production.
 	ExitCond(c *CondContext)

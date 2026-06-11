@@ -26,6 +26,12 @@ func (s *BaseCalcPlusListener) EnterProgram(ctx *ProgramContext) {}
 // ExitProgram is called when production program is exited.
 func (s *BaseCalcPlusListener) ExitProgram(ctx *ProgramContext) {}
 
+// EnterFuncDef is called when production funcDef is entered.
+func (s *BaseCalcPlusListener) EnterFuncDef(ctx *FuncDefContext) {}
+
+// ExitFuncDef is called when production funcDef is exited.
+func (s *BaseCalcPlusListener) ExitFuncDef(ctx *FuncDefContext) {}
+
 // EnterDeclare is called when production Declare is entered.
 func (s *BaseCalcPlusListener) EnterDeclare(ctx *DeclareContext) {}
 
@@ -38,17 +44,11 @@ func (s *BaseCalcPlusListener) EnterExprAssign(ctx *ExprAssignContext) {}
 // ExitExprAssign is called when production ExprAssign is exited.
 func (s *BaseCalcPlusListener) ExitExprAssign(ctx *ExprAssignContext) {}
 
-// EnterReadAssign is called when production ReadAssign is entered.
-func (s *BaseCalcPlusListener) EnterReadAssign(ctx *ReadAssignContext) {}
+// EnterExprStmt is called when production ExprStmt is entered.
+func (s *BaseCalcPlusListener) EnterExprStmt(ctx *ExprStmtContext) {}
 
-// ExitReadAssign is called when production ReadAssign is exited.
-func (s *BaseCalcPlusListener) ExitReadAssign(ctx *ReadAssignContext) {}
-
-// EnterWrite is called when production Write is entered.
-func (s *BaseCalcPlusListener) EnterWrite(ctx *WriteContext) {}
-
-// ExitWrite is called when production Write is exited.
-func (s *BaseCalcPlusListener) ExitWrite(ctx *WriteContext) {}
+// ExitExprStmt is called when production ExprStmt is exited.
+func (s *BaseCalcPlusListener) ExitExprStmt(ctx *ExprStmtContext) {}
 
 // EnterIfElse is called when production IfElse is entered.
 func (s *BaseCalcPlusListener) EnterIfElse(ctx *IfElseContext) {}
@@ -61,6 +61,18 @@ func (s *BaseCalcPlusListener) EnterStmtBlock(ctx *StmtBlockContext) {}
 
 // ExitStmtBlock is called when production StmtBlock is exited.
 func (s *BaseCalcPlusListener) ExitStmtBlock(ctx *StmtBlockContext) {}
+
+// EnterReturn is called when production Return is entered.
+func (s *BaseCalcPlusListener) EnterReturn(ctx *ReturnContext) {}
+
+// ExitReturn is called when production Return is exited.
+func (s *BaseCalcPlusListener) ExitReturn(ctx *ReturnContext) {}
+
+// EnterFuncCall is called when production FuncCall is entered.
+func (s *BaseCalcPlusListener) EnterFuncCall(ctx *FuncCallContext) {}
+
+// ExitFuncCall is called when production FuncCall is exited.
+func (s *BaseCalcPlusListener) ExitFuncCall(ctx *FuncCallContext) {}
 
 // EnterMulDiv is called when production MulDiv is entered.
 func (s *BaseCalcPlusListener) EnterMulDiv(ctx *MulDivContext) {}
@@ -91,6 +103,18 @@ func (s *BaseCalcPlusListener) EnterInt(ctx *IntContext) {}
 
 // ExitInt is called when production Int is exited.
 func (s *BaseCalcPlusListener) ExitInt(ctx *IntContext) {}
+
+// EnterParamList is called when production paramList is entered.
+func (s *BaseCalcPlusListener) EnterParamList(ctx *ParamListContext) {}
+
+// ExitParamList is called when production paramList is exited.
+func (s *BaseCalcPlusListener) ExitParamList(ctx *ParamListContext) {}
+
+// EnterArgList is called when production argList is entered.
+func (s *BaseCalcPlusListener) EnterArgList(ctx *ArgListContext) {}
+
+// ExitArgList is called when production argList is exited.
+func (s *BaseCalcPlusListener) ExitArgList(ctx *ArgListContext) {}
 
 // EnterCond is called when production cond is entered.
 func (s *BaseCalcPlusListener) EnterCond(ctx *CondContext) {}

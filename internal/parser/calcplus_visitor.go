@@ -10,23 +10,29 @@ type CalcPlusVisitor interface {
 	// Visit a parse tree produced by CalcPlusParser#program.
 	VisitProgram(ctx *ProgramContext) interface{}
 
+	// Visit a parse tree produced by CalcPlusParser#funcDef.
+	VisitFuncDef(ctx *FuncDefContext) interface{}
+
 	// Visit a parse tree produced by CalcPlusParser#Declare.
 	VisitDeclare(ctx *DeclareContext) interface{}
 
 	// Visit a parse tree produced by CalcPlusParser#ExprAssign.
 	VisitExprAssign(ctx *ExprAssignContext) interface{}
 
-	// Visit a parse tree produced by CalcPlusParser#ReadAssign.
-	VisitReadAssign(ctx *ReadAssignContext) interface{}
-
-	// Visit a parse tree produced by CalcPlusParser#Write.
-	VisitWrite(ctx *WriteContext) interface{}
+	// Visit a parse tree produced by CalcPlusParser#ExprStmt.
+	VisitExprStmt(ctx *ExprStmtContext) interface{}
 
 	// Visit a parse tree produced by CalcPlusParser#IfElse.
 	VisitIfElse(ctx *IfElseContext) interface{}
 
 	// Visit a parse tree produced by CalcPlusParser#StmtBlock.
 	VisitStmtBlock(ctx *StmtBlockContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#Return.
+	VisitReturn(ctx *ReturnContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#FuncCall.
+	VisitFuncCall(ctx *FuncCallContext) interface{}
 
 	// Visit a parse tree produced by CalcPlusParser#MulDiv.
 	VisitMulDiv(ctx *MulDivContext) interface{}
@@ -42,6 +48,12 @@ type CalcPlusVisitor interface {
 
 	// Visit a parse tree produced by CalcPlusParser#Int.
 	VisitInt(ctx *IntContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#paramList.
+	VisitParamList(ctx *ParamListContext) interface{}
+
+	// Visit a parse tree produced by CalcPlusParser#argList.
+	VisitArgList(ctx *ArgListContext) interface{}
 
 	// Visit a parse tree produced by CalcPlusParser#cond.
 	VisitCond(ctx *CondContext) interface{}

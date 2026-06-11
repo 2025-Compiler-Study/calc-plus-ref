@@ -1,40 +1,29 @@
 package interpreter
 
 import (
+	"calcPlus/internal/ast"
 	"calcPlus/internal/parser"
-	"github.com/antlr4-go/antlr/v4"
 	"io"
+
+	"github.com/antlr4-go/antlr/v4"
 )
 
-func RunCalc3Interpreter(code string, reader io.Reader, writer io.Writer) {
+func BuildAST(code string) []ast.Statement {
 	is := antlr.NewInputStream(code)
 	lexer := parser.NewCalcPlusLexer(is)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 	p := parser.NewCalcPlusParser(stream)
 
 	tree := p.Program()
-	calculator := NewCalc3Interpreter(reader, writer)
-	calculator.Visit(tree)
+	return NewASTBuilder().Build(tree)
 }
 
-func RunCalc4Interpreter(code string, reader io.Reader, writer io.Writer) {
-	is := antlr.NewInputStream(code)
-	lexer := parser.NewCalcPlusLexer(is)
-	stream := antlr.NewCommonTokenStream(lexer, 0)
-	p := parser.NewCalcPlusParser(stream)
-
-	tree := p.Program()
-	calculator := NewCalc4Interpreter(reader, writer)
-	calculator.Visit(tree)
+func RunInterpreter(program []ast.Statement, reader io.Reader, writer io.Writer) {
+	if err := NewInterpreter(reader, writer).Run(program); err != nil {
+		panic(err)
+	}
 }
 
-func RunCalc5Interpreter(code string, reader io.Reader, writer io.Writer) {
-	is := antlr.NewInputStream(code)
-	lexer := parser.NewCalcPlusLexer(is)
-	stream := antlr.NewCommonTokenStream(lexer, 0)
-	p := parser.NewCalcPlusParser(stream)
-
-	tree := p.Program()
-	calculator := NewCalc5Interpreter(reader, writer)
-	calculator.Visit(tree)
+func RunCode(code string, reader io.Reader, writer io.Writer) {
+	RunInterpreter(BuildAST(code), reader, writer)
 }
