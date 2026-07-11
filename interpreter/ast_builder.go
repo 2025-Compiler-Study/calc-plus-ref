@@ -4,7 +4,6 @@ import (
 	"calcPlus/internal/ast"
 	"calcPlus/internal/parser"
 	"calcPlus/internal/symbols"
-	"fmt"
 	"strconv"
 
 	"github.com/antlr4-go/antlr/v4"
@@ -13,7 +12,7 @@ import (
 type ASTBuilder struct {
 	parser.BaseCalcPlusVisitor
 
-	program   []ast.Statement
+	program   *ast.Program
 	variables *symbols.ScopedTable[int]
 }
 
@@ -23,8 +22,8 @@ func NewASTBuilder() *ASTBuilder {
 	}
 }
 
-func (b *ASTBuilder) Build(tree antlr.ParseTree) []ast.Statement {
-	b.program = nil
+func (b *ASTBuilder) Build(tree antlr.ParseTree) *ast.Program {
+	b.program = ast.NewProgram()
 	b.variables = symbols.NewScopedTable[int]()
 	b.Visit(tree)
 	return b.program
@@ -36,15 +35,27 @@ func (b *ASTBuilder) Visit(tree antlr.ParseTree) any {
 
 func (b *ASTBuilder) VisitProgram(ctx *parser.ProgramContext) any {
 	for _, funcDef := range ctx.AllFuncDef() {
-		if funcDef.IDENT().GetText() != "main" {
-			continue
-		}
+		b.program.Functions = append(b.program.Functions, b.Visit(funcDef).(*ast.FunctionDefinition))
+	}
+	return b.program
+}
 
-		b.program = append(b.program, b.Visit(funcDef.Block()).([]ast.Statement)...)
-		return nil
+func (b *ASTBuilder) VisitFuncDef(ctx *parser.FuncDefContext) any {
+	b.variables = symbols.NewScopedTable[int]()
+
+	var parameters []ast.Parameter
+	if paramList := ctx.ParamList(); paramList != nil {
+		for _, ident := range paramList.AllIDENT() {
+			name := ident.GetText()
+			if err := b.variables.Register(name); err != nil {
+				panic(err)
+			}
+			parameters = append(parameters, ast.Parameter{Name: name})
+		}
 	}
 
-	panic("main function not found")
+	body := ast.NewBlockStatements(b.Visit(ctx.Block()).([]ast.Statement)...)
+	return ast.NewFunctionDefinition(ctx.IDENT().GetText(), ctx.GetToken(parser.CalcPlusParserT__1, 0) != nil, parameters, body)
 }
 
 func (b *ASTBuilder) VisitDeclare(ctx *parser.DeclareContext) any {
@@ -96,7 +107,11 @@ func (b *ASTBuilder) VisitStmtBlock(ctx *parser.StmtBlockContext) any {
 }
 
 func (b *ASTBuilder) VisitReturn(ctx *parser.ReturnContext) any {
-	panic("return is not supported by the AST builder")
+	var value ast.Expression
+	if ctx.Expr() != nil {
+		value = b.Visit(ctx.Expr()).(ast.Expression)
+	}
+	return []ast.Statement{ast.NewReturn(value)}
 }
 
 func (b *ASTBuilder) VisitBlock(ctx *parser.BlockContext) any {
@@ -129,19 +144,26 @@ func (b *ASTBuilder) VisitAddSub(ctx *parser.AddSubContext) any {
 
 func (b *ASTBuilder) VisitFuncCall(ctx *parser.FuncCallContext) any {
 	name := ctx.IDENT().GetText()
+	var arguments []ast.Expression
+	if argList := ctx.ArgList(); argList != nil {
+		for _, expression := range argList.AllExpr() {
+			arguments = append(arguments, b.Visit(expression).(ast.Expression))
+		}
+	}
+
 	switch name {
 	case "read":
-		if ctx.ArgList() != nil {
+		if len(arguments) != 0 {
 			panic("read does not accept arguments")
 		}
 		return ast.NewBuiltinReadCall()
 	case "write":
-		if ctx.ArgList() == nil || len(ctx.ArgList().AllExpr()) != 1 {
+		if len(arguments) != 1 {
 			panic("write requires exactly one argument")
 		}
-		return ast.NewBuiltinWriteCall(b.Visit(ctx.ArgList().Expr(0)).(ast.Expression))
+		return ast.NewBuiltinWriteCall(arguments[0])
 	default:
-		panic(fmt.Sprintf("function call is not supported by the AST builder: %s", name))
+		return ast.NewFunctionCall(name, arguments...)
 	}
 }
 

@@ -81,3 +81,17 @@ func (i *IfElse) StringDepth(d int) string {
 
 	return sb.String()
 }
+
+type Return struct {
+	Value Expression
+}
+
+func NewReturn(value Expression) *Return { return &Return{Value: value} }
+func (r *Return) statement()             {}
+func (r *Return) String() string         { return r.StringDepth(0) }
+func (r *Return) StringDepth(depth int) string {
+	if r.Value == nil {
+		return fmt.Sprintf("%sReturn\n", indent(depth))
+	}
+	return fmt.Sprintf("%sReturn:\n%s\n", indent(depth), r.Value.StringDepth(depth+1))
+}

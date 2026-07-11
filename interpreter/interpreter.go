@@ -16,11 +16,17 @@ func NewInterpreter(reader io.Reader, writer io.Writer) *Interpreter {
 	}
 }
 
-func (i *Interpreter) Run(program []ast.Statement) error {
-	for _, stmt := range program {
-		if err := i.Engine.Execute(stmt); err != nil {
-			return err
+func (i *Interpreter) Run(program *ast.Program) error {
+	for _, function := range program.Functions {
+		if function.Name != "main" {
+			continue
 		}
+		for _, stmt := range *function.Body {
+			if err := i.Engine.Execute(stmt); err != nil {
+				return err
+			}
+		}
+		return nil
 	}
 	return nil
 }

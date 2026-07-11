@@ -8,7 +8,7 @@ import (
 	"github.com/antlr4-go/antlr/v4"
 )
 
-func BuildAST(code string) []ast.Statement {
+func BuildAST(code string) *ast.Program {
 	is := antlr.NewInputStream(code)
 	lexer := parser.NewCalcPlusLexer(is)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
@@ -18,7 +18,7 @@ func BuildAST(code string) []ast.Statement {
 	return NewASTBuilder().Build(tree)
 }
 
-func RunInterpreter(program []ast.Statement, reader io.Reader, writer io.Writer) {
+func RunInterpreter(program *ast.Program, reader io.Reader, writer io.Writer) {
 	if err := NewInterpreter(reader, writer).Run(program); err != nil {
 		panic(err)
 	}
